@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include ("../partials/header.ejs") %>
+  </head>
+
+  <body>
+    <%- include ("../partials/nav.ejs") %>
+
+    <div class="container">
+      <h2>Surveys</h2>
+      <table class="table table-dark table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Survey ID</th>
+            <th scope="col">User ID (owner)</th>
+            <th scope="col">Survey Name</th>
+            <th scope="col">Is Open</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% surveys.forEach(function(row) { %>
+          <tr>
+            <th scope="row"><%= row.survey_id %></th>
+            <td><%= row.user_id %></td>
+            <td><%= row.survey_name %></td>
+            <td><%= row.is_open %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

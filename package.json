@@ -1,0 +1,28 @@
+{
+  "name": "postgresql-proto",
+  "version": "1.0.0",
+  "description": "Prototype of a Node JS app hosted on Heroku using Heroku Postgresql.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node",
+    "watch": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mackaronii/postgresql-proto.git"
+  },
+  "author": "Johnny Mack",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mackaronii/postgresql-proto/issues"
+  },
+  "homepage": "https://github.com/Mackaronii/postgresql-proto#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15",
+    "pg": "^8.7.3"
+  }
+}
