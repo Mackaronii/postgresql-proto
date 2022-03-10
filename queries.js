@@ -17,7 +17,7 @@ const getSurveys = async function () {
   return client
     .query("SELECT * FROM survey")
     .then((results) => {
-      console.table(results.rows);
+      //console.table(results.rows);
       return results.rows;
     })
     .catch((e) => console.error(e))

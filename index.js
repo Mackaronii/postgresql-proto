@@ -16,7 +16,6 @@ app.get("/", (req, res) => res.render("pages/index"));
 app.get("/surveys", async (req, res) => {
   try {
     const surveys = await db.getSurveys();
-    console.log(surveys);
     res.render("pages/surveys", { surveys: surveys });
   } catch (err) {
     console.error(err);
