@@ -14,10 +14,34 @@ const pool = new Pool({
   },
 });
 
+/**
+ * GET all surveys and join on the Users table to get the username of the surveyor.
+ *
+ * @returns all surveys with corresponding surveyor
+ */
 const getSurveys = async function () {
   const client = await pool.connect();
   return client
-    .query("SELECT * FROM survey")
+    .query(
+      "SELECT * FROM survey INNER JOIN users ON survey.userId = users.userId ORDER BY surveyId"
+    )
+    .then((results) => {
+      //console.table(results.rows);
+      return results.rows;
+    })
+    .catch((e) => console.error(e))
+    .finally(() => client.release());
+};
+
+const getSurveyNameById = async function (req, res) {
+  const surveyId = req.params.id;
+  const sql = format(
+    "SELECT * FROM survey WHERE surveyId = %L LIMIT 1",
+    surveyId
+  );
+  const client = await pool.connect();
+  return client
+    .query(sql)
     .then((results) => {
       //console.table(results.rows);
       return results.rows;
@@ -66,6 +90,7 @@ const createSurvey = async function (surveyId, userId, surveyName, isOpen) {
 
 module.exports = {
   getSurveys,
+  getSurveyNameById,
   getQuestions,
   createSurvey,
 };
