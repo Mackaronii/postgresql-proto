@@ -95,12 +95,6 @@ const postAnswers = async function (req, res) {
   const surveyId = req.params.id;
   const surveyResults = JSON.parse(JSON.stringify(req.body));
   let tuples = [];
-<<<<<<< HEAD
-  for (const questionId in surveyResults) {
-    const answerText = surveyResults[questionId];
-    tuples.push(format(
-      "(%s, %s, %L)",
-=======
   for (const questionId in surveyResults) {
     const answerText = surveyResults[questionId];
     tuples.push(format(
