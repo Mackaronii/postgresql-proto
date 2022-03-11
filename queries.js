@@ -33,7 +33,14 @@ const getSurveys = async function () {
     .finally(() => client.release());
 };
 
-const getSurveyNameById = async function (req, res) {
+/**
+ * GET survey by surveyId.
+ *
+ * @param {id} req
+ * @param {} res
+ * @returns the survey given its surveyId
+ */
+const getSurveyById = async function (req, res) {
   const surveyId = req.params.id;
   const sql = format(
     "SELECT * FROM survey WHERE surveyId = %L LIMIT 1",
@@ -50,6 +57,13 @@ const getSurveyNameById = async function (req, res) {
     .finally(() => client.release());
 };
 
+/**
+ * GET all questions for a given survey by its surveyId.
+ *
+ * @param {id} req
+ * @param {*} res
+ * @returns all questions of a survey
+ */
 const getQuestions = async function (req, res) {
   const surveyId = req.params.id;
   const sql = format(
@@ -90,7 +104,7 @@ const createSurvey = async function (surveyId, userId, surveyName, isOpen) {
 
 module.exports = {
   getSurveys,
-  getSurveyNameById,
+  getSurveyById,
   getQuestions,
   createSurvey,
 };

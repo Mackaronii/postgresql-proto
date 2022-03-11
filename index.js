@@ -26,10 +26,11 @@ app.get("/surveys", async (req, res) => {
 // GET all questions for a particular survey
 app.get("/surveys/:id", async (req, res) => {
   try {
-    const survey = await db.getSurveyNameById(req, res);
+    const survey = await db.getSurveyById(req, res);
     const questions = await db.getQuestions(req, res);
+    surveyname = survey[0].surveyname;
     res.render("pages/questions", {
-      survey: survey,
+      surveyname: surveyname,
       questions: questions,
     });
   } catch (err) {
