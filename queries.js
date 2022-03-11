@@ -1,11 +1,11 @@
 const { Pool } = require("pg");
 const format = require("pg-format");
 const { user } = require("pg/lib/defaults");
-// Load local .env file if running locally
-var bodyParser = require('body-parser');  
-// Create application/x-www-form-urlencoded parser  
-var urlencodedParser = bodyParser.urlencoded({ extended: false })  
+var bodyParser = require("body-parser");
+// Create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+// Load local .env file if running locally
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
@@ -40,7 +40,7 @@ const getSurveys = async function () {
  * GET survey by surveyId.
  *
  * @param {id} req
- * @param {} res
+ * @param {*} res
  * @returns the survey given its surveyId
  */
 const getSurveyById = async function (req, res) {
@@ -84,28 +84,31 @@ const getQuestions = async function (req, res) {
     .finally(() => client.release());
 };
 
-
 const createSurvey = async function (req, res) {
   const surveyId = req.body.surveyId;
   const userId = req.body.userId;
   const surveyName = req.body.surveyName;
   const isOpen = req.body.isOpen === "Y" ? true : false;
-  console.log(isOpen)
-  const sql = format("INSERT INTO survey (surveyID, userID, surveyName, isOpen) VALUES (%L, %L, %L, %L)", surveyId,userId, surveyName, isOpen);//                "SELECT * FROM question WHERE surveyId = %L", surveyId);
+  console.log(isOpen);
+  const sql = format(
+    "INSERT INTO survey (surveyID, userID, surveyName, isOpen) VALUES (%L, %L, %L, %L)",
+    surveyId,
+    userId,
+    surveyName,
+    isOpen
+  ); //                "SELECT * FROM question WHERE surveyId = %L", surveyId);
   console.log(sql);
   const client = await pool.connect();
   return client
     .query(sql)
     .then((results) => {
       console.table(results.rows);
-      console.log('survey added with id: %s', surveyId);
+      console.log("survey added with id: %s", surveyId);
       return results.rows;
     })
-    .catch((e) => console.error(e +" he"))
+    .catch((e) => console.error(e + " he"))
     .finally(() => client.release());
 };
-
-
 
 module.exports = {
   getSurveys,

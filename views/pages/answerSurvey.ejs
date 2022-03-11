@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include ("../partials/header.ejs") %>
+  </head>
+
+  <body>
+    <%- include ("../partials/nav.ejs") %>
+
+    <div class="container">
+      <h2><%= surveyname %></h2>
+      <form method="POST">
+        <% questions.forEach(function(row) { %> <% if (row.questiontype ===
+        'open-ended') { %> <%- include("../partials/open-ended.ejs", {row}) %>
+        <% } else if (row.questiontype === 'number-range') { %> <%-
+        include("../partials/number-range.ejs", {row}) %> <% } else {%> <%-
+        include("../partials/options.ejs", {row}) %> <% }}); %>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
