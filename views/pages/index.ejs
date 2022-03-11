@@ -7,10 +7,15 @@
   <body>
     <%- include ("../partials/nav.ejs") %>
 
-    <div class="container">
-      <a class="btn btn-success" href="/create-survey" role="button"
-        >+ Create New Survey</a
-      >
+    <div class="container center">
+      <form method="POST">
+        surveyID: <input type="text" name="surveyId">  <br>  
+        userID: <input type="number" name="userId"> <br>
+        surveyName: <input type="text" name="surveyName"><br>
+        isOpen:(Y/N) <input type="text" name="isOpen"> <br>
+        <input type="submit" value="+ Create New Survey" class="btn btn-success">
+      </form>
+      
     </div>
   </body>
 </html>
