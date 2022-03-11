@@ -26,12 +26,15 @@ const getSurveys = async function () {
 };
 
 const getQuestions = async function (surveyId) {
-  const sql = format("SELECT * FROM question WHERE surveyId = %L", surveyId);
+  const sql = format(
+    "SELECT * FROM question WHERE surveyId = %L ORDER BY questionOrder",
+    surveyId
+  );
   const client = await pool.connect();
   return client
     .query(sql)
     .then((results) => {
-      console.table(results.rows);
+      //console.table(results.rows);
       return results.rows;
     })
     .catch((e) => console.error(e))

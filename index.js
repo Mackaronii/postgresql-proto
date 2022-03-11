@@ -29,8 +29,7 @@ app.get("/surveys/:id", async (req, res) => {
     const surveyId = req.params.id;
     const questions = await db.getQuestions(surveyId);
     console.log(questions);
-    return res.send(questions);
-    // res.render("pages/surveys", { surveys: surveys });
+    res.render("pages/questions", { questions: questions });
   } catch (err) {
     console.error(err);
     res.send("Error " + err);

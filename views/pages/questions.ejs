@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include ("../partials/header.ejs") %>
+  </head>
+
+  <body>
+    <%- include ("../partials/nav.ejs") %>
+
+    <div class="container">
+      <h2>Questions</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Question ID</th>
+            <th scope="col">Question Type</th>
+            <th scope="col">Question Prompt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% questions.forEach(function(row) { %>
+          <tr>
+            <th scope="row"><%= row.questionid %></th>
+            <td><%= row.questiontype %></td>
+            <td><%= row.questionprompt %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
