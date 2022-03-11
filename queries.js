@@ -10,20 +10,13 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
-const pool = (() => {
-if (process.env.NODE_ENV !== 'production') {
-    return new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: false
-    });
-} else {
-    return new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: {
-            rejectUnauthorized: false
-          }
-    });
-} })();
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
 /**
  * GET all surveys and join on the Users table to get the username of the surveyor.
  *
