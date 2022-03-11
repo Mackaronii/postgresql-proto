@@ -1,8 +1,15 @@
 const db = require("./queries");
 
 const express = require("express");
-const app = express();
+const app = express(); 
+var bodyParser = require('body-parser');  
+// Create application/x-www-form-urlencoded parser  
+var urlencodedParser = bodyParser.urlencoded({ extended: false })  
+
+
+
 const path = require("path");
+const { nextTick } = require("process");
 const PORT = process.env.PORT || 8000;
 
 app
@@ -39,14 +46,16 @@ app.get("/surveys/:id", async (req, res) => {
   }
 });
 
-// POST request
-app.post("/create-surveys", async (req, res) => {
+// POST request to post a survey
+app.post("/", urlencodedParser, async (req, res) => {
   try {
-    const result = await db.createSurvey(1, 4, "ish", true);
+    alert("Survey created");
+    const result = await db.createSurvey(req, res);
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
   }
 });
+
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
