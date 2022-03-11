@@ -1,9 +1,18 @@
-<div class="form-group">
-  <label for="<%= question.questionid %>"><%- question.questionprompt %></label>
+<div class="form-check">
   <input
     name="<%= question.questionid %>"
     type="radio"
-    class="form-control"
-    id="<%= question.questionid %>"
+    class="form-check-input"
+    id="<%= question.questionid %>1"
   />
+  <label class="form-check-label">An option</label>
+</div>
+<div class="form-check">
+  <input
+    name="<%= question.questionid %>"
+    type="radio"
+    class="form-check-input"
+    id="<%= question.questionid %>2"
+  />
+  <label class="form-check-label">An option</label>
 </div>

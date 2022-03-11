@@ -52,6 +52,7 @@ app.post("/surveys/:id", urlencodedParser, async (req, res) => {
   try {
     const result = await db.postAnswers(req, res);
     const surveyId = req.params.surveyId;
+    res.status(301).redirect("/");
     //res.render("pages/create-questions", { surveyId: surveyId });
   } catch (err) {
     console.error(err);

@@ -3,11 +3,9 @@
   <input
     name="<%= question.questionid %>"
     type="range"
-    class="form-control"
+    class="form-range"
     id="<%= question.questionid %>"
-    aria-describedby="numberRangeHelp"
+    oninput="this.nextElementSibling.value = this.value"
   />
-  <small id="numberRangeHelp" class="form-text text-muted"
-    >Choose a value within the range.</small
-  >
+  <output>50</output>
 </div>
