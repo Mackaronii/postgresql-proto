@@ -22,14 +22,13 @@ CREATE TABLE users
 
 
 CREATE TABLE answer
-(answerID SERIAL NOT NULL,
+(answerID SERIAL PRIMARY KEY,
  surveyID INTEGER NOT NULL,
  questionID INTEGER NOT NULL,
- answerText TEXT NOT NULL,
- PRIMARY KEY (answerID));
+ answerText TEXT NOT NULL);
 
 
-ALTER TABLE question
+ALTER TABLE question  
   ADD CONSTRAINT FK_question_TO_survey
     FOREIGN KEY (surveyID)
     REFERENCES survey(surveyID);
