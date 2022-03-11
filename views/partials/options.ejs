@@ -1,4 +1,9 @@
 <div class="form-group">
   <label for="<%= question.questionid %>"><%- question.questionprompt %></label>
-  <input type="radio" class="form-control" id="<%= question.questionid %>" />
+  <input
+    name="<%= question.questionid %>"
+    type="radio"
+    class="form-control"
+    id="<%= question.questionid %>"
+  />
 </div>

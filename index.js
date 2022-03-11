@@ -51,7 +51,9 @@ app.get("/surveys/:id", async (req, res) => {
 // POST request to post user answers
 app.post("/surveys/:id", urlencodedParser, async (req, res) => {
   try {
-    console.log(req);
+    const result = await db.postAnswers(req, res);
+    const surveyId = req.params.surveyId;
+    //res.render("pages/create-questions", { surveyId: surveyId });
   } catch (err) {
     console.error(err);
     res.send("Error " + err);

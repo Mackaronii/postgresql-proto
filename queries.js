@@ -84,6 +84,29 @@ const getQuestions = async function (req, res) {
     .finally(() => client.release());
 };
 
+const postAnswers = async function (req, res) {
+  const surveyId = req.params.id;
+  const surveyResults = JSON.parse(JSON.stringify(req.body));
+  for (const questionId in surveyResults) {
+    const answer = surveyResults[questionId];
+    const sql = format(
+      "INSERT INTO answer (answerID, surveyID, questionID, answerText) VALUES (1, %s, %s, %L)",
+      surveyId,
+      questionId,
+      answer
+    );
+    console.log(sql);
+    // const client = await pool.connect();
+    // return client
+    //   .query(sql)
+    //   .then((results) => {
+    //     console.table(results.rows);
+    //   })
+    //   .catch((e) => console.error(e))
+    //   .finally(() => client.release());
+  }
+};
+
 const createSurvey = async function (req, res) {
   const surveyId = req.body.surveyId;
   const userId = req.body.userId;
@@ -114,5 +137,6 @@ module.exports = {
   getSurveys,
   getSurveyById,
   getQuestions,
+  postAnswers,
   createSurvey,
 };

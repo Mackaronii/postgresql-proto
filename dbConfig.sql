@@ -22,7 +22,7 @@ CREATE TABLE users
 
 
 CREATE TABLE answer
-(answerID INTEGER NOT NULL,
+(answerID SERIAL NOT NULL,
  surveyID INTEGER NOT NULL,
  questionID INTEGER NOT NULL,
  answerText TEXT NOT NULL,
@@ -34,15 +34,15 @@ ALTER TABLE question
     FOREIGN KEY (surveyID)
     REFERENCES survey(surveyID);
 
-ALTER TABLE answer
-  ADD CONSTRAINT FK_answer_TO_survey
-    FOREIGN KEY (surveyID)
-    REFERENCES survey(surveyID);
-
 ALTER TABLE survey
   ADD CONSTRAINT FK_survey_TO_users
     FOREIGN KEY (userID)
     REFERENCES users(userID);
+
+ALTER TABLE answer
+  ADD CONSTRAINT FK_answer_TO_survey
+    FOREIGN KEY (surveyID)
+    REFERENCES survey(surveyID);
 
 ALTER TABLE answer
   ADD CONSTRAINT FK_answer_TO_question
