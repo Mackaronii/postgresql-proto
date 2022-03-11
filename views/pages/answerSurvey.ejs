@@ -10,13 +10,16 @@
     <div class="container">
       <h2><%= surveyname %></h2>
       <form method="POST">
-        <% questions.forEach(function(row) { %> <% if (row.questiontype ===
-        'open-ended') { %> <%- include("../partials/open-ended.ejs", {question:
-        row}) %> <% } else if (row.questiontype === 'number-range') { %> <%-
+        <% questions.forEach(function(row) { %>
+        <hr />
+        <% if (row.questiontype === 'open-ended') { %> <%-
+        include("../partials/open-ended.ejs", {question: row}) %> <% } else if
+        (row.questiontype === 'number-range') { %> <%-
         include("../partials/number-range.ejs", {question: row}) %> <% } else
         {%> <%- include("../partials/options.ejs", {question: row}) %> <% }});
         %>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <hr />
+        <button type="submit" class="btn btn-primary">Submit Answers</button>
       </form>
     </div>
   </body>

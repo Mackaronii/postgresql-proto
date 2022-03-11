@@ -1,18 +1,25 @@
+<h3><%= question.questionprompt %></h3>
 <div class="form-check">
   <input
-    name="<%= question.questionid %>"
-    type="radio"
     class="form-check-input"
+    type="radio"
+    value="First option"
+    name="<%= question.questionid %>"
     id="<%= question.questionid %>1"
   />
-  <label class="form-check-label">An option</label>
+  <label class="form-check-label" for="<%= question.questionid %>1"
+    >First option</label
+  >
 </div>
 <div class="form-check">
   <input
-    name="<%= question.questionid %>"
-    type="radio"
     class="form-check-input"
+    type="radio"
+    value="Second option"
+    name="<%= question.questionid %>"
     id="<%= question.questionid %>2"
   />
-  <label class="form-check-label">An option</label>
+  <label class="form-check-label" for="<%= question.questionid %>2"
+    >Second option</label
+  >
 </div>
