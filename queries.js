@@ -1,4 +1,5 @@
 const { Pool } = require("pg");
+const format = require("pg-format");
 
 // Load local .env file if running locally
 if (process.env.NODE_ENV !== "production") {
@@ -24,6 +25,19 @@ const getSurveys = async function () {
     .finally(() => client.end());
 };
 
+const getQuestions = async function (surveyId) {
+  const sql = format("SELECT * FROM question WHERE surveyId = %L", surveyId);
+  const client = await pool.connect();
+  return client
+    .query(sql)
+    .then((results) => {
+      console.table(results.rows);
+      return results.rows;
+    })
+    .catch((e) => console.error(e))
+    .finally(() => client.end());
+};
+
 const createSurvey = (request, response) => {
   console.log(request.body);
   const { userId, surveyName, isOpen } = request.body;
@@ -42,5 +56,6 @@ const createSurvey = (request, response) => {
 
 module.exports = {
   getSurveys,
+  getQuestions,
   createSurvey,
 };

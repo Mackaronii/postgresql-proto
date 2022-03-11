@@ -10,13 +10,27 @@ app
   .set("views", path.join(__dirname, "views"))
   .set("view engine", "ejs");
 
-// GET request
+// GET all surveys
 app.get("/", (req, res) => res.render("pages/index"));
 
 app.get("/surveys", async (req, res) => {
   try {
     const surveys = await db.getSurveys();
     res.render("pages/surveys", { surveys: surveys });
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
+// GET all questions for a particular survey
+app.get("/surveys/:id", async (req, res) => {
+  try {
+    const surveyId = req.params.id;
+    const questions = await db.getQuestions(surveyId);
+    console.log(questions);
+    return res.send(questions);
+    // res.render("pages/surveys", { surveys: surveys });
   } catch (err) {
     console.error(err);
     res.send("Error " + err);

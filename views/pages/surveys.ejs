@@ -16,6 +16,7 @@
             <th scope="col">User ID (owner)</th>
             <th scope="col">Survey Name</th>
             <th scope="col">Is Open</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -25,6 +26,9 @@
             <td><%= row.userid %></td>
             <td><%= row.surveyname %></td>
             <td><%= row.isopen %></td>
+            <td>
+              <a href="/surveys/<%= row.surveyid %>" class="btn btn-primary" role="button">Start</button>
+            </td>
           </tr>
           <% }); %>
         </tbody>

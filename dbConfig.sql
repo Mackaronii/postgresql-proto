@@ -9,9 +9,9 @@ CREATE TABLE survey
 CREATE TABLE question
 (questionID INTEGER NOT NULL,
  surveyID INTEGER NOT NULL,
- questionOrder character varying NOT NULL,
- questionType INTEGER NOT NULL,
- questionPrompt INTEGER NOT NULL,
+ questionOrder INTEGER NOT NULL,
+ questionType TEXT NOT NULL,
+ questionPrompt TEXT NOT NULL,
  PRIMARY KEY (questionID));
 
 
