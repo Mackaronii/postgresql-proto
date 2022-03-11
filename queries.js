@@ -23,7 +23,7 @@ const getSurveys = async function () {
       return results.rows;
     })
     .catch((e) => console.error(e))
-    .finally(() => client.end());
+    .finally(() => client.release());
 };
 
 const getQuestions = async function (surveyId) {
@@ -39,26 +39,29 @@ const getQuestions = async function (surveyId) {
       return results.rows;
     })
     .catch((e) => console.error(e))
-    .finally(() => client.end());
+    .finally(() => client.release());
 };
-
 
 const createSurvey = async function (surveyId, userId, surveyName, isOpen) {
   console.log(request.body);
-  const sql = format("INSERT INTO survey (surveyID, userID, surveyName, isOpen) VALUES (%L, %L, %s, %L)", surveyId,userId, surveyName, isOpen);//                "SELECT * FROM question WHERE surveyId = %L", surveyId);
+  const sql = format(
+    "INSERT INTO survey (surveyID, userID, surveyName, isOpen) VALUES (%L, %L, %s, %L)",
+    surveyId,
+    userId,
+    surveyName,
+    isOpen
+  ); //                "SELECT * FROM question WHERE surveyId = %L", surveyId);
   const client = await pool.connect();
   return client
     .query(sql)
     .then((results) => {
       console.table(results.rows);
-      console.log('survey added with id: %s', surveyId);
+      console.log("survey added with id: %s", surveyId);
       return results.rows;
     })
     .catch((e) => console.error(e))
-    .finally(() => client.end());
+    .finally(() => client.release());
 };
-
-
 
 module.exports = {
   getSurveys,
