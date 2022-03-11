@@ -10,13 +10,20 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
+const pool = (() => {
+if (process.env.NODE_ENV !== 'production') {
+    return new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: false
+    });
+} else {
+    return new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+          }
+    });
+} })();
 /**
  * GET all surveys and join on the Users table to get the username of the surveyor.
  *
@@ -87,25 +94,27 @@ const getQuestions = async function (req, res) {
 const postAnswers = async function (req, res) {
   const surveyId = req.params.id;
   const surveyResults = JSON.parse(JSON.stringify(req.body));
+  let tuples = [];
   for (const questionId in surveyResults) {
-    const answer = surveyResults[questionId];
-    const sql = format(
-      "INSERT INTO answer (answerID, surveyID, questionID, answerText) VALUES (1, %s, %s, %L)",
+    const answerText = surveyResults[questionId];
+    tuples.push(format(
+      "(%s, %s, %L)",
       surveyId,
       questionId,
-      answer
-    );
-    console.log(sql);
-    // const client = await pool.connect();
-    // return client
-    //   .query(sql)
-    //   .then((results) => {
-    //     console.table(results.rows);
-    //   })
-    //   .catch((e) => console.error(e))
-    //   .finally(() => client.release());
+      answerText
+    ));
+    console.log("tuple entry:" + tuples[tuples.length - 1]);
   }
-  return surveyResults;
+  const sql = "INSERT INTO answer (surveyID, questionID, answerText) VALUES " + tuples.join(", ");
+  console.log("sql: " + sql);
+  const client = await pool.connect();
+  return client
+    .query(sql)
+    .then((results) => {
+      console.table(results.rows);
+    })
+    .catch((e) => console.error(e))
+    .finally(() => client.release());
 };
 
 const createSurvey = async function (req, res) {
