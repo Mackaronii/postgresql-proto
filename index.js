@@ -37,9 +37,9 @@ app.get("/surveys/:id", async (req, res) => {
 });
 
 // POST request
-app.post("/surveys", async (req, res) => {
+app.post("/create-surveys", async (req, res) => {
   try {
-    const result = await db.createSurvey();
+    const result = await db.createSurvey(1, 4, 'ish', true );
   } catch (err) {
     console.error(err);
     res.send("Error " + err);

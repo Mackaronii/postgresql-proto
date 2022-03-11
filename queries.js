@@ -1,5 +1,6 @@
 const { Pool } = require("pg");
 const format = require("pg-format");
+const { user } = require("pg/lib/defaults");
 
 // Load local .env file if running locally
 if (process.env.NODE_ENV !== "production") {
@@ -41,21 +42,23 @@ const getQuestions = async function (surveyId) {
     .finally(() => client.end());
 };
 
-const createSurvey = (request, response) => {
-  console.log(request.body);
-  const { userId, surveyName, isOpen } = request.body;
 
-  pool.query(
-    "INSERT INTO survey (userId, surveyName, isOpen) VALUES ($1, $2, $3)",
-    [userId, surveyName, isOpen],
-    (error, result) => {
-      if (error) {
-        throw error;
-      }
-      response.status(201).send(`Survey added with ID: ${result.insertId}`);
-    }
-  );
+const createSurvey = async function (surveyId, userId, surveyName, isOpen) {
+  console.log(request.body);
+  const sql = format("INSERT INTO survey (surveyID, userID, surveyName, isOpen) VALUES (%L, %L, %s, %L)", surveyId,userId, surveyName, isOpen);//                "SELECT * FROM question WHERE surveyId = %L", surveyId);
+  const client = await pool.connect();
+  return client
+    .query(sql)
+    .then((results) => {
+      console.table(results.rows);
+      console.log('survey added with id: %s', surveyId);
+      return results.rows;
+    })
+    .catch((e) => console.error(e))
+    .finally(() => client.end());
 };
+
+
 
 module.exports = {
   getSurveys,
