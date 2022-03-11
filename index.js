@@ -13,7 +13,6 @@ const PORT = process.env.PORT || 8000;
 
 app
   .use(express.static(path.join(__dirname, "public")))
-  .use("/favicon.ico", express.static("public/favicon.ico"))
   .set("views", path.join(__dirname, "views"))
   .set("view engine", "ejs");
 
@@ -38,7 +37,7 @@ app.get("/surveys/:id", async (req, res) => {
     const questions = await db.getQuestions(req, res);
     console.log(questions);
     surveyname = survey[0].surveyname;
-    res.render("pages/answerSurvey", {
+    res.render("pages/answer-survey", {
       surveyname: surveyname,
       questions: questions,
     });
@@ -51,9 +50,12 @@ app.get("/surveys/:id", async (req, res) => {
 // POST request to post user answers
 app.post("/surveys/:id", urlencodedParser, async (req, res) => {
   try {
-    const result = await db.postAnswers(req, res);
+    const answers = await db.postAnswers(req, res);
     const surveyId = req.params.surveyId;
-    res.status(301).redirect("/");
+    console.log(answers);
+    res.render("pages/answer-submitted.ejs", {
+      answers: answers,
+    });
     //res.render("pages/create-questions", { surveyId: surveyId });
   } catch (err) {
     console.error(err);

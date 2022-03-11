@@ -105,6 +105,7 @@ const postAnswers = async function (req, res) {
     //   .catch((e) => console.error(e))
     //   .finally(() => client.release());
   }
+  return surveyResults;
 };
 
 const createSurvey = async function (req, res) {
@@ -141,8 +142,12 @@ const createQuestions = async function (req, res) {
   const questionPrompt = req.body.questionPrompt;
   const sql = format(
     "INSERT INTO question (questionID, surveyID, questionOrder, questionType, questionPrompt) VALUES (%L, %L, %L, %L, %L)",
-    questionId, surveyId, questionOrder, questionType, questionPrompt
-  ); 
+    questionId,
+    surveyId,
+    questionOrder,
+    questionType,
+    questionPrompt
+  );
   console.log(sql);
   const client = await pool.connect();
   return client

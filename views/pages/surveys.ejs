@@ -27,7 +27,12 @@
             <td><%= row.username %></td>
             <td><%= row.isopen %></td>
             <td>
-              <a href="/surveys/<%= row.surveyid %>" class="btn btn-primary" role="button">Start</button>
+              <a
+                href="/surveys/<%= row.surveyid %>"
+                class="btn btn-primary"
+                role="button"
+                >Start</a
+              >
             </td>
           </tr>
           <% }); %>
