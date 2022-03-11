@@ -110,9 +110,33 @@ const createSurvey = async function (req, res) {
     .finally(() => client.release());
 };
 
+const createQuestions = async function (req, res) {
+  const surveyId = req.body.surveyId;
+  const questionId = req.body.questionId;
+  const questionOrder = req.body.questionOrder;
+  const questionType = req.body.questionType;
+  const questionPrompt = req.body.questionPrompt;
+  const sql = format(
+    "INSERT INTO question (questionID, surveyID, questionOrder, questionType, questionPrompt) VALUES (%L, %L, %L, %L, %L)",
+    questionId, surveyId, questionOrder, questionType, questionPrompt
+  ); 
+  console.log(sql);
+  const client = await pool.connect();
+  return client
+    .query(sql)
+    .then((results) => {
+      console.table(results.rows);
+      console.log("question added with id: %s", questionId);
+      return results.rows;
+    })
+    .catch((e) => console.error(e + " he"))
+    .finally(() => client.release());
+};
+
 module.exports = {
   getSurveys,
   getSurveyById,
   getQuestions,
   createSurvey,
+  createQuestions,
 };

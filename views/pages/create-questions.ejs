@@ -9,29 +9,13 @@
 
     <div class="container center">
       <form method="POST">
-        <div class="container">
-          <h2><%= survey[0].surveyid %></h2>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">Question ID</th>
-                <th scope="col">Question Type</th>
-                <th scope="col">Question Prompt</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% questions.forEach(function(row) { %>
-              <tr>
-                <th scope="row"><%= row.questionid %></th>
-                <td><%= row.questiontype %></td>
-                <td><%= row.questionprompt %></td>
-              </tr>
-              <% }); %>
-            </tbody>
-          </table>
-        </div>
+          questionID: <input type="text" name="questionId" ><br>
+          surveyID: <input type="text" name="surveyId"><br>  
+          questionOrder: <input type="text" name="questionOrder" ><br>
+          questionType: <input type="text" name="questionType" ><br>
+          questionPrompt: <input type="text" name="questionPrompt" ><br>
+          <input id="createquestion" type="submit" value="Submit question" class="btn btn-primary">
       </form>
-      
     </div>
   </body>
 </html>
