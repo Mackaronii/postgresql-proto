@@ -18,7 +18,6 @@ app
 
 // GET homepage
 app.get("/", (req, res) => res.render("pages/index"));
-app.get("/create-survey", (req, res) => res.render("pages/answerSurvey"));
 
 // GET all surveys
 app.get("/surveys", async (req, res) => {
@@ -69,10 +68,18 @@ app.get("/create-survey", async (req, res) => {
   }
 });
 
+app.get("/create-questions", async (req, res) => {
+  try {
+    res.render("pages/create-questions", {});
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
 // POST request to post a survey
 app.post("/create-survey", urlencodedParser, async (req, res) => {
   try {
-    const result = await db.createSurvey(req, res);
     const surveyId = req.body.surveyId;
     res.render("pages/create-questions", { surveyId: surveyId });
   } catch (err) {
