@@ -26,7 +26,8 @@ const getSurveys = async function () {
     .finally(() => client.release());
 };
 
-const getQuestions = async function (surveyId) {
+const getQuestions = async function (req, res) {
+  const surveyId = req.params.id;
   const sql = format(
     "SELECT * FROM question WHERE surveyId = %L ORDER BY questionOrder",
     surveyId

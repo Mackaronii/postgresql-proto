@@ -26,8 +26,7 @@ app.get("/surveys", async (req, res) => {
 // GET all questions for a particular survey
 app.get("/surveys/:id", async (req, res) => {
   try {
-    const surveyId = req.params.id;
-    const questions = await db.getQuestions(surveyId);
+    const questions = await db.getQuestions(req, res);
     console.log(questions);
     res.render("pages/questions", { questions: questions });
   } catch (err) {
@@ -39,7 +38,7 @@ app.get("/surveys/:id", async (req, res) => {
 // POST request
 app.post("/create-surveys", async (req, res) => {
   try {
-    const result = await db.createSurvey(1, 4, 'ish', true );
+    const result = await db.createSurvey(1, 4, "ish", true);
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
