@@ -30,7 +30,7 @@ app.get("/surveys", async (req, res) => {
   }
 });
 
-// GET all questions for a particular survey
+// GET all questions for a particular survey and present survey for user to answer
 app.get("/surveys/:id", async (req, res) => {
   try {
     const survey = await db.getSurveyById(req, res);
@@ -51,6 +51,17 @@ app.get("/surveys/:id", async (req, res) => {
 app.post("/", urlencodedParser, async (req, res) => {
   try {
     const result = await db.createSurvey(req, res);
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
+// POST user's survey answers
+app.post("/surveys/:id", urlencodedParser, async (req, res) => {
+  try {
+    console.log(req);
+    //const result = await db.createSurvey(req, res);
   } catch (err) {
     console.error(err);
     res.send("Error " + err);

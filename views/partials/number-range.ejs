@@ -1,11 +1,10 @@
 <div class="form-group">
-  <label for="numberRangeQuestion">Number Range Question</label>
+  <label for="<%= question.questionid %>"><%- question.questionprompt %></label>
   <input
     type="range"
     class="form-control"
-    id="numberRangeQuestion"
+    id="<%= question.questionid %>"
     aria-describedby="numberRangeHelp"
-    placeholder="Select a value"
   />
   <small id="numberRangeHelp" class="form-text text-muted"
     >Choose a value within the range.</small

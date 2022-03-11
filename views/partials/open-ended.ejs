@@ -1,9 +1,9 @@
 <div class="form-group">
-  <label for="openEndedQuestion">Open-Ended Question</label>
+  <label for="<%= question.questionid %>"><%- question.questionprompt %></label>
   <input
     type="text"
     class="form-control"
-    id="openEndedQuestion"
+    id="<%= question.questionid %>"
     aria-describedby="openEndedHelp"
     placeholder="Enter answer here"
   />
