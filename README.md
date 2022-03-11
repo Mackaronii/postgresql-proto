@@ -15,8 +15,9 @@
 2. Run ```npm install``` to pull the dependencies.
 3. Create a ```.env``` file to contain the Heroku app's ```DATABASE_URL``` configuration variable under the Settings tab.
 4. Ensure Postgres is installed on your machine and added to your system environment variables.
-5. Run ```npm run watch```.
-6. The app should now be listening on port 8000.
+5. Log into Heroku using the Heroku CLI ```heroku login```.
+6. Run ```npm run watch```.
+7. The app should now be listening on port 8000.
 
 
 ## Files
