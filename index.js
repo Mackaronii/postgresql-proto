@@ -8,6 +8,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const path = require("path");
 const { nextTick } = require("process");
+const res = require("express/lib/response");
 const PORT = process.env.PORT || 8000;
 
 app
@@ -47,21 +48,21 @@ app.get("/surveys/:id", async (req, res) => {
   }
 });
 
-// POST request to post a survey
-app.post("/", urlencodedParser, async (req, res) => {
+app.get("/create-survey", async (req, res) => {
   try {
-    const result = await db.createSurvey(req, res);
+    res.render("pages/create-survey", {});
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
   }
 });
 
-// POST user's survey answers
-app.post("/surveys/:id", urlencodedParser, async (req, res) => {
+// POST request to post a survey
+app.post("/create-survey", urlencodedParser, async (req, res) => {
   try {
-    console.log(req);
-    //const result = await db.createSurvey(req, res);
+    const result = await db.createSurvey(req, res);
+    const surveyId = req.body.surveyId;
+    res.render("pages/create-questions", { surveyId: surveyId });
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
