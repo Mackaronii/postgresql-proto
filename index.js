@@ -33,9 +33,12 @@ app.get("/surveys", async (req, res) => {
 // GET all questions for a particular survey
 app.get("/surveys/:id", async (req, res) => {
   try {
+    const survey = await db.getSurveyNameById(req, res);
     const questions = await db.getQuestions(req, res);
-    console.log(questions);
-    res.render("pages/questions", { questions: questions });
+    res.render("pages/questions", {
+      survey: survey,
+      questions: questions,
+    });
   } catch (err) {
     console.error(err);
     res.send("Error " + err);

@@ -13,9 +13,9 @@
         <thead>
           <tr>
             <th scope="col">Survey ID</th>
-            <th scope="col">User ID (owner)</th>
             <th scope="col">Survey Name</th>
-            <th scope="col">Is Open</th>
+            <th scope="col">Surveyor</th>
+            <th scope="col">Is Open?</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -23,8 +23,8 @@
           <% surveys.forEach(function(row) { %>
           <tr>
             <th scope="row"><%= row.surveyid %></th>
-            <td><%= row.userid %></td>
             <td><%= row.surveyname %></td>
+            <td><%= row.username %></td>
             <td><%= row.isopen %></td>
             <td>
               <a href="/surveys/<%= row.surveyid %>" class="btn btn-primary" role="button">Start</button>
