@@ -25,5 +25,7 @@
     "nodemon": "^2.0.15",
     "pg": "^8.7.3",
     "pg-format": "^1.0.4"
-  }
+  },
+  "devDependencies": {},
+  "keywords": []
 }
