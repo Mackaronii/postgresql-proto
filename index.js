@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 8000;
 
 app
   .use(express.static(path.join(__dirname, "public")))
+  .use("/favicon.ico", express.static("public/favicon.ico"))
   .set("views", path.join(__dirname, "views"))
   .set("view engine", "ejs");
 
