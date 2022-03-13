@@ -90,15 +90,12 @@ const postAnswers = async function (req, res) {
   let tuples = [];
   for (const questionId in surveyResults) {
     const answerText = surveyResults[questionId];
-    tuples.push(format(
-      "(%s, %s, %L)",
-      surveyId,
-      questionId,
-      answerText
-    ));
+    tuples.push(format("(%s, %s, %L)", surveyId, questionId, answerText));
     console.log("tuple entry:" + tuples[tuples.length - 1]);
   }
-  const sql = "INSERT INTO answer (surveyID, questionID, answerText) VALUES " + tuples.join(", ");
+  const sql =
+    "INSERT INTO answer (surveyID, questionID, answerText) VALUES " +
+    tuples.join(", ");
   console.log("sql: " + sql);
   const client = await pool.connect();
   return client
@@ -111,55 +108,60 @@ const postAnswers = async function (req, res) {
 };
 
 const createSurvey = async function (req, res) {
-  const surveyId = req.body.surveyId;
-  const userId = req.body.userId;
-  const surveyName = req.body.surveyName;
-  const isOpen = req.body.isOpen === "Y" ? true : false;
-  console.log(isOpen);
+  // Extract user input from request body
+  const newSurvey = {
+    userId: req.body.userId,
+    surveyName: req.body.surveyName,
+    isOpen: true,
+  };
+  // Construct SQL query
   const sql = format(
-    "INSERT INTO survey (surveyID, userID, surveyName, isOpen) VALUES (%L, %L, %L, %L)",
-    surveyId,
-    userId,
-    surveyName,
-    isOpen
-  ); //                "SELECT * FROM question WHERE surveyId = %L", surveyId);
+    "INSERT INTO survey (userID, surveyName, isOpen) VALUES (%s, %L, %L) RETURNING surveyID",
+    newSurvey.userId,
+    newSurvey.surveyName,
+    newSurvey.isOpen
+  );
   console.log(sql);
+  // Return query as promise
   const client = await pool.connect();
   return client
     .query(sql)
     .then((results) => {
       console.table(results.rows);
-      console.log("survey added with id: %s", surveyId);
+      console.log(`New survey created [ID=${results.rows[0].surveyid}]`);
       return results.rows;
     })
-    .catch((e) => console.error(e + " he"))
+    .catch((e) => console.error(e))
     .finally(() => client.release());
 };
 
 const createQuestions = async function (req, res) {
-  const surveyId = req.body.surveyId;
-  const questionId = req.body.questionId;
-  const questionOrder = req.body.questionOrder;
-  const questionType = req.body.questionType;
-  const questionPrompt = req.body.questionPrompt;
+  // Extract user input from request body
+  const newQuestion = {
+    surveyId: req.body.surveyId,
+    questionOrder: req.body.questionOrder,
+    questionType: req.body.questionType,
+    questionPrompt: req.body.questionPrompt,
+  };
+  // Construct SQL query
   const sql = format(
-    "INSERT INTO question (questionID, surveyID, questionOrder, questionType, questionPrompt) VALUES (%L, %L, %L, %L, %L)",
-    questionId,
-    surveyId,
-    questionOrder,
-    questionType,
-    questionPrompt
+    "INSERT INTO question (surveyID, questionOrder, questionType, questionPrompt) VALUES (%L, %L, %L, %L) RETURNING questionID",
+    newQuestion.surveyId,
+    newQuestion.questionOrder,
+    newQuestion.questionType,
+    newQuestion.questionPrompt
   );
   console.log(sql);
+  // Return query as promise
   const client = await pool.connect();
   return client
     .query(sql)
     .then((results) => {
       console.table(results.rows);
-      console.log("question added with id: %s", questionId);
+      console.log(`New question created [ID=${results.rows[0].questionid}]`);
       return results.rows;
     })
-    .catch((e) => console.error(e + " he"))
+    .catch((e) => console.error(e))
     .finally(() => client.release());
 };
 

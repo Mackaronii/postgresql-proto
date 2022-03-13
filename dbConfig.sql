@@ -1,24 +1,21 @@
 CREATE TABLE survey
-(surveyID INTEGER NOT NULL,
+(surveyID SERIAL PRIMARY KEY,
  userID INTEGER NOT NULL,
  surveyName TEXT NOT NULL,
- isOpen BOOLEAN NOT NULL,
- PRIMARY KEY (surveyID));
+ isOpen BOOLEAN NOT NULL);
 
 
 CREATE TABLE question
-(questionID INTEGER NOT NULL,
+(questionID SERIAL PRIMARY KEY,
  surveyID INTEGER NOT NULL,
  questionOrder INTEGER NOT NULL,
  questionType TEXT NOT NULL,
- questionPrompt TEXT NOT NULL,
- PRIMARY KEY (questionID));
+ questionPrompt TEXT NOT NULL);
 
 
 CREATE TABLE users
-(userID INTEGER NOT NULL,
- username TEXT NOT NULL,
- PRIMARY KEY (userID));
+(userID SERIAL PRIMARY KEY,
+ username TEXT NOT NULL);
 
 
 CREATE TABLE answer

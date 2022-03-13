@@ -7,8 +7,6 @@ var bodyParser = require("body-parser");
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const path = require("path");
-const { nextTick } = require("process");
-const res = require("express/lib/response");
 const PORT = process.env.PORT || 8000;
 
 app
@@ -53,7 +51,7 @@ app.post("/surveys/:id", urlencodedParser, async (req, res) => {
     const answers = await db.postAnswers(req, res);
     const surveyId = req.params.surveyId;
     console.log(answers);
-    res.render("pages/answer-submitted.ejs", {
+    res.render("pages/answer-submitted", {
       answers: answers,
     });
     //res.render("pages/create-questions", { surveyId: surveyId });
@@ -63,18 +61,10 @@ app.post("/surveys/:id", urlencodedParser, async (req, res) => {
   }
 });
 
+// Render "Create new survey" page
 app.get("/create-survey", async (req, res) => {
   try {
-    res.render("pages/create-survey", {});
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
-});
-
-app.get("/create-questions", async (req, res) => {
-  try {
-    res.render("pages/create-questions", {});
+    res.render("pages/create-survey");
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
@@ -84,8 +74,29 @@ app.get("/create-questions", async (req, res) => {
 // POST request to post a survey
 app.post("/create-survey", urlencodedParser, async (req, res) => {
   try {
-    const surveyId = req.body.surveyId;
-    res.render("pages/create-questions", { surveyId: surveyId });
+    const newSurvey = await db.createSurvey(req, res);
+    res.render("pages/create-questions", { newSurvey: newSurvey });
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
+// Render "Create new question" page
+app.get("/create-questions", async (req, res) => {
+  try {
+    res.render("pages/create-questions", {});
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
+// POST request to post a question
+app.post("/create-questions", urlencodedParser, async (req, res) => {
+  try {
+    const newQuestion = await db.createQuestions(req, res);
+    // res.render("pages/create-questions", { surveyId: surveyId });
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
