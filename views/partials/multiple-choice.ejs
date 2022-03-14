@@ -1,25 +1,11 @@
-<h3><%= question.questionprompt %></h3>
-<div class="form-check">
-  <input
-    class="form-check-input"
-    type="radio"
-    value="First option"
+<div class="form-group">
+  <label for="<%= question.questionid %>"><%- question.questionprompt %></label>
+  <select
     name="<%= question.questionid %>"
-    id="<%= question.questionid %>1"
-  />
-  <label class="form-check-label" for="<%= question.questionid %>1"
-    >First option</label
+    id="<%= question.questionid %>"
+    class="form-control"
   >
-</div>
-<div class="form-check">
-  <input
-    class="form-check-input"
-    type="radio"
-    value="Second option"
-    name="<%= question.questionid %>"
-    id="<%= question.questionid %>2"
-  />
-  <label class="form-check-label" for="<%= question.questionid %>2"
-    >Second option</label
-  >
+    <option>Option 1</option>
+    <option>Option 2</option>
+  </select>
 </div>
