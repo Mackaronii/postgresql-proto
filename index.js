@@ -62,20 +62,14 @@ app.post("/surveys/:id", urlencodedParser, async (req, res) => {
 });
 
 // Render "Create new survey" page
-app.get("/create-survey", async (req, res) => {
-  try {
-    res.render("pages/create-survey");
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
-});
+app.get("/create-survey", (req, res) => res.render("pages/create-survey"));
 
 // POST request to post a survey
 app.post("/create-survey", urlencodedParser, async (req, res) => {
   try {
     const newSurvey = await db.createSurvey(req, res);
-    res.render("pages/create-questions", { newSurvey: newSurvey });
+    res.redirect(301, "/");
+    //res.render("pages/create-questions", { newSurvey: newSurvey });
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
@@ -83,19 +77,15 @@ app.post("/create-survey", urlencodedParser, async (req, res) => {
 });
 
 // Render "Create new question" page
-app.get("/create-questions", async (req, res) => {
-  try {
-    res.render("pages/create-questions", {});
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
-});
+app.get("/create-questions", (req, res) =>
+  res.render("pages/create-questions")
+);
 
 // POST request to post a question
 app.post("/create-questions", urlencodedParser, async (req, res) => {
   try {
     const newQuestion = await db.createQuestions(req, res);
+    res.redirect(301, "/");
     // res.render("pages/create-questions", { surveyId: surveyId });
   } catch (err) {
     console.error(err);

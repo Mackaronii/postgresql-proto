@@ -9,14 +9,34 @@
 
     <div class="container center">
       <form method="POST">
-        userID: <input type="number" name="userId" /> <br />
-        surveyName: <input type="text" name="surveyName" /><br />
-        <input
-          id="createsurvey"
-          type="submit"
-          value="Submit survey"
-          class="btn btn-primary"
-        />
+        <div class="form-group">
+          <label for="userId">User ID (Surveyor)</label>
+          <input
+            name="userId"
+            id="userId"
+            type="text"
+            class="form-control"
+            aria-describedby="userIdHelp"
+            placeholder="Enter the user ID of this survey's surveyor"
+            required
+          />
+          <small id="userIdHelp" class="form-text text-muted"
+            >The user ID provided will be the surveyor of this survey. They will
+            be the only one that can close this survey.</small
+          >
+        </div>
+        <div class="form-group">
+          <label for="surveyName">Survey Name</label>
+          <input
+            name="surveyName"
+            id="surveyName"
+            type="text"
+            class="form-control"
+            placeholder="Enter a name for the new survey"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Create Survey</button>
       </form>
     </div>
   </body>

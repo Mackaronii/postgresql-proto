@@ -1,11 +1,11 @@
 --Insert a user
-INSERT INTO users (userID, username) VALUES (1, 'Johnny');
+INSERT INTO users (username) VALUES ('Johnny');
 
 --Insert a survey
-INSERT INTO survey (surveyID, userID, surveyName, isOpen) VALUES (1, 1, 'Johnny''s Survey', true);
+INSERT INTO survey (userID, surveyName, isOpen) VALUES (1, 'Test Survey', true);
 
 --Insert a question
-INSERT INTO question (questionID, surveyID, questionOrder, questionType, questionPrompt) VALUES (1, 1, 1, 'open-ended', 'Is this an open-ended question?');
+INSERT INTO question (surveyID, questionOrder, questionType, questionPrompt) VALUES (1, 1, 'open-ended', 'Is this an open-ended question?');
 
 --Insert an answer
 INSERT INTO answer (surveyID, questionID, answerText) VALUES (1, 1, 'my answer');

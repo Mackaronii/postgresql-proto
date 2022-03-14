@@ -16,8 +16,8 @@
         include("../partials/open-ended.ejs", {question: row}) %> <% } else if
         (row.questiontype === 'number-range') { %> <%-
         include("../partials/number-range.ejs", {question: row}) %> <% } else
-        {%> <%- include("../partials/options.ejs", {question: row}) %> <% }});
-        %>
+        {%> <%- include("../partials/multiple-choice.ejs", {question: row}) %>
+        <% }}); %>
         <hr />
         <button type="submit" class="btn btn-primary">Submit Answers</button>
       </form>

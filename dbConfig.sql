@@ -10,7 +10,10 @@ CREATE TABLE question
  surveyID INTEGER NOT NULL,
  questionOrder INTEGER NOT NULL,
  questionType TEXT NOT NULL,
- questionPrompt TEXT NOT NULL);
+ questionPrompt TEXT NOT NULL,
+ minRange INTEGER,
+ maxRange INTEGER,
+ options TEXT);
 
 
 CREATE TABLE users
