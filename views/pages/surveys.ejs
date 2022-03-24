@@ -15,7 +15,7 @@
             <th scope="col">Survey ID</th>
             <th scope="col">Survey Name</th>
             <th scope="col">Surveyor</th>
-            <th scope="col">Is Open?</th>
+            <th scope="col">Status</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -25,19 +25,25 @@
             <th scope="row"><%= row.surveyid %></th>
             <td><%= row.surveyname %></td>
             <td><%= row.username %></td>
-            <td><%= row.isopen %></td>
+            <td>
+              <% if (row.isopen) { %>
+              <span class="label label-success">Open</span>
+              <% } else { %>
+              <span class="label label-default">Closed</span>
+              <% }; %>
+            </td>
             <td>
               <% if (row.isopen) { %>
               <a
                 href="/surveys/<%= row.surveyid %>"
-                class="btn btn-primary"
+                class="btn btn-success"
                 role="button"
                 >Start</a
               >
               <a
                 id="<%= row.surveyid %>"
                 onclick="closeSurvey(this.id)"
-                class="btn btn-primary"
+                class="btn btn-danger"
                 role="button"
                 >Close Survey</a
               >
