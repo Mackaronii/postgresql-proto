@@ -9,8 +9,9 @@
     oninput="this.nextElementSibling.value = this.value"
     min="<%= question.minrange %>"
     max="<%= question.maxrange %>"
+    value="<%= Math.ceil((question.maxrange - question.minrange) / 2) %>"
   />
-  <output><%- (question.maxrange - question.minrange) / 2 %></output>
+  <output><%- Math.ceil((question.maxrange - question.minrange) / 2) %></output>
   <% } else { %>
   <p>This question is missing min/max range values.</p>
   <% }; %>
