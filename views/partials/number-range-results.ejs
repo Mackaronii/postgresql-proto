@@ -1,2 +1,4 @@
-<label for="<%= question.questionid %>"><%- question.questionprompt %></label>
-<p>Histogram goes here.</p>
+<div>
+  <label for="<%= question.questionid %>"><%- question.questionprompt %></label>
+  <canvas id="<%= question.questionid %>"></canvas>
+</div>
