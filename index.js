@@ -86,7 +86,7 @@ app.get("/surveys/:id/results", async (req, res) => {
       question["answers"] = await db.getSurveyAnswersByQuestionId(req, res);
     }
     // console.log(survey);
-    // console.log(surveyQuestions);
+    console.log(surveyQuestions);
     res.render("pages/survey-results", {
       survey: survey[0],
       surveyResults: surveyQuestions,

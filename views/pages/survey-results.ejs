@@ -9,7 +9,15 @@
 
     <div class="container">
       <h2>Survey Results for <%= survey.surveyname %></h2>
-      <p>List, histogram, and pie chart go here.</p>
+      <% surveyResults.forEach(function(question) { %>
+      <hr />
+      <% if (question.questiontype === 'open-ended') { %> <%-
+      include("../partials/open-ended-results.ejs", {question: question}) %> <%
+      } else if (question.questiontype === 'number-range') { %>
+      <p>Histogram goes here.</p>
+      <% } else {%>
+      <p>Pie chart goes here.</p>
+      <% }}); %>
       <p><%= JSON.stringify(surveyResults); %></p>
     </div>
   </body>
