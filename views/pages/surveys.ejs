@@ -34,6 +34,13 @@
                 role="button"
                 >Start</a
               >
+              <a
+                id="<%= row.surveyid %>"
+                onclick="closeSurvey(this.id)"
+                class="btn btn-primary"
+                role="button"
+                >Close Survey</a
+              >
               <% } else { %>
               <a
                 href="/surveys/<%= row.surveyid %>/results"
@@ -48,5 +55,19 @@
         </tbody>
       </table>
     </div>
+    <script>
+      function closeSurvey(surveyId) {
+        $.ajax({
+          url: `/surveys/${surveyId}`,
+          type: "PATCH",
+          data: {
+            isOpen: false,
+          },
+          success: function (res) {
+            location.reload();
+          },
+        });
+      }
+    </script>
   </body>
 </html>

@@ -60,6 +60,26 @@ const getSurveyById = async function (req, res) {
     .finally(() => client.release());
 };
 
+const closeSurveyById = async function (req, res) {
+  const surveyId = req.params.id;
+  const isOpen = req.body.isOpen;
+  const sql = format(
+    "UPDATE survey SET isopen = %L WHERE surveyId = %L",
+    isOpen,
+    surveyId
+  );
+  console.log(sql);
+  const client = await pool.connect();
+  return client
+    .query(sql)
+    .then((results) => {
+      //console.table(results.rows);
+      return results.rows;
+    })
+    .catch((e) => console.error(e))
+    .finally(() => client.release());
+};
+
 /**
  * GET all questions for a given survey by its surveyId.
  *
@@ -168,6 +188,7 @@ const createQuestions = async function (req, res) {
 module.exports = {
   getSurveys,
   getSurveyById,
+  closeSurveyById,
   getQuestions,
   postAnswers,
   createSurvey,

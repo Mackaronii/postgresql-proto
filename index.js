@@ -61,6 +61,17 @@ app.post("/surveys/:id", urlencodedParser, async (req, res) => {
   }
 });
 
+// PATCH survey to be closed
+app.patch("/surveys/:id", urlencodedParser, async (req, res) => {
+  try {
+    await db.closeSurveyById(req, res);
+    res.status(200).send();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
 // Render survey results for a particular survey
 app.get("/surveys/:id/results", async (req, res) => {
   try {
