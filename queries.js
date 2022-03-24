@@ -61,6 +61,27 @@ const getSurveyById = async function (req, res) {
 };
 
 /**
+ * GET survey questions by surveyId.
+ *
+ * @param {id} req
+ * @param {*} res
+ * @returns the survey given its surveyId
+ */
+const getSurveyQuestionsById = async function (req, res) {
+  const surveyId = req.params.id;
+  const sql = format("SELECT * FROM question WHERE surveyId = %L", surveyId);
+  const client = await pool.connect();
+  return client
+    .query(sql)
+    .then((results) => {
+      //console.table(results.rows);
+      return results.rows;
+    })
+    .catch((e) => console.error(e))
+    .finally(() => client.release());
+};
+
+/**
  * GET survey results by surveyId.
  *
  * @param {id} req
@@ -128,6 +149,27 @@ const getQuestions = async function (req, res) {
     "SELECT * FROM question WHERE surveyId = %L ORDER BY questionOrder",
     surveyId
   );
+  const client = await pool.connect();
+  return client
+    .query(sql)
+    .then((results) => {
+      //console.table(results.rows);
+      return results.rows;
+    })
+    .catch((e) => console.error(e))
+    .finally(() => client.release());
+};
+
+/**
+ * GET all answers for a given question by its questionId.
+ *
+ * @param {questionid} req
+ * @param {*} res
+ * @returns all answers for a question
+ */
+const getSurveyAnswersByQuestionId = async function (req, res) {
+  const questionId = req.params.questionid;
+  const sql = format("SELECT * FROM answer WHERE questionid = %L", questionId);
   const client = await pool.connect();
   return client
     .query(sql)
@@ -223,9 +265,11 @@ const createQuestions = async function (req, res) {
 module.exports = {
   getSurveys,
   getSurveyById,
+  getSurveyQuestionsById,
   getSurveyResultsById,
   closeSurveyById,
   getQuestions,
+  getSurveyAnswersByQuestionId,
   postAnswers,
   createSurvey,
   createQuestions,

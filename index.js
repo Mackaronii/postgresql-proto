@@ -7,6 +7,7 @@ var bodyParser = require("body-parser");
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const path = require("path");
+const { brotliDecompress } = require("zlib");
 const PORT = process.env.PORT || 8000;
 
 app
@@ -75,10 +76,20 @@ app.patch("/surveys/:id", urlencodedParser, async (req, res) => {
 // Render survey results for a particular survey
 app.get("/surveys/:id/results", async (req, res) => {
   try {
-    const surveyResults = await db.getSurveyResultsById(req, res);
-    console.log(surveyResults);
+    // Get the survey
+    const survey = await db.getSurveyById(req, res);
+    // Get the questions for the survey
+    const surveyQuestions = await db.getSurveyQuestionsById(req, res);
+    // Get the submitted answers for each question
+    for (const question of surveyQuestions) {
+      req.params.questionid = question.questionid;
+      question["answers"] = await db.getSurveyAnswersByQuestionId(req, res);
+    }
+    // console.log(survey);
+    // console.log(surveyQuestions);
     res.render("pages/survey-results", {
-      surveyResults: surveyResults,
+      survey: survey[0],
+      surveyResults: surveyQuestions,
     });
   } catch (err) {
     console.error(err);
