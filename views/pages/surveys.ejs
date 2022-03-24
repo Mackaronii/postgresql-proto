@@ -27,12 +27,14 @@
             <td><%= row.username %></td>
             <td><%= row.isopen %></td>
             <td>
+              <% if (row.isopen) { %>
               <a
                 href="/surveys/<%= row.surveyid %>"
                 class="btn btn-primary"
                 role="button"
                 >Start</a
               >
+              <% }; %>
             </td>
           </tr>
           <% }); %>
