@@ -60,6 +60,41 @@ const getSurveyById = async function (req, res) {
     .finally(() => client.release());
 };
 
+/**
+ * GET survey results by surveyId.
+ *
+ * @param {id} req
+ * @param {*} res
+ * @returns
+ */
+const getSurveyResultsById = async function (req, res) {
+  const surveyId = req.params.id;
+  const sql = format(
+    `SELECT * FROM survey
+    INNER JOIN question ON survey.surveyid = question.surveyid
+    INNER JOIN answer ON question.questionid = answer.questionid
+    WHERE survey.surveyId = %L
+    ORDER BY question.questionorder`,
+    surveyId
+  );
+  const client = await pool.connect();
+  return client
+    .query(sql)
+    .then((results) => {
+      //console.table(results.rows);
+      return results.rows;
+    })
+    .catch((e) => console.error(e))
+    .finally(() => client.release());
+};
+
+/**
+ * PATCH survey to be closed by surveyId.
+ *
+ * @param {id} req
+ * @param {*} res
+ * @returns
+ */
 const closeSurveyById = async function (req, res) {
   const surveyId = req.params.id;
   const isOpen = req.body.isOpen;
@@ -188,6 +223,7 @@ const createQuestions = async function (req, res) {
 module.exports = {
   getSurveys,
   getSurveyById,
+  getSurveyResultsById,
   closeSurveyById,
   getQuestions,
   postAnswers,

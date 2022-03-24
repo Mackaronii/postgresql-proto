@@ -75,14 +75,10 @@ app.patch("/surveys/:id", urlencodedParser, async (req, res) => {
 // Render survey results for a particular survey
 app.get("/surveys/:id/results", async (req, res) => {
   try {
-    const survey = await db.getSurveyById(req, res);
-    const questions = await db.getQuestions(req, res);
-    // Need to query answers based on question ID
-    console.log(questions);
-    surveyname = survey[0].surveyname;
+    const surveyResults = await db.getSurveyResultsById(req, res);
+    console.log(surveyResults);
     res.render("pages/survey-results", {
-      surveyname: surveyname,
-      questions: questions,
+      surveyResults: surveyResults,
     });
   } catch (err) {
     console.error(err);
