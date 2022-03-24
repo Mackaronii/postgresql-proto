@@ -61,6 +61,24 @@ app.post("/surveys/:id", urlencodedParser, async (req, res) => {
   }
 });
 
+// Render survey results for a particular survey
+app.get("/surveys/:id/results", async (req, res) => {
+  try {
+    const survey = await db.getSurveyById(req, res);
+    const questions = await db.getQuestions(req, res);
+    // Need to query answers based on question ID
+    console.log(questions);
+    surveyname = survey[0].surveyname;
+    res.render("pages/survey-results", {
+      surveyname: surveyname,
+      questions: questions,
+    });
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
 // Render "Create new survey" page
 app.get("/create-survey", (req, res) => res.render("pages/create-survey"));
 

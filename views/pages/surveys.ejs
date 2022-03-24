@@ -27,12 +27,21 @@
             <td><%= row.username %></td>
             <td><%= row.isopen %></td>
             <td>
+              <% if (row.isopen) { %>
               <a
                 href="/surveys/<%= row.surveyid %>"
                 class="btn btn-primary"
                 role="button"
                 >Start</a
               >
+              <% } else { %>
+              <a
+                href="/surveys/<%= row.surveyid %>/results"
+                class="btn btn-primary"
+                role="button"
+                >View Results</a
+              >
+              <% }; %>
             </td>
           </tr>
           <% }); %>
