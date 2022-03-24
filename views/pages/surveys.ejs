@@ -34,6 +34,13 @@
                 role="button"
                 >Start</a
               >
+              <% } else { %>
+              <a
+                href="/surveys/<%= row.surveyid %>/results"
+                class="btn btn-primary"
+                role="button"
+                >View Results</a
+              >
               <% }; %>
             </td>
           </tr>
