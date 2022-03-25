@@ -15,89 +15,152 @@
       include("../partials/open-ended-results.ejs", {question: question}) %> <%
       } else if (question.questiontype === 'number-range') { %> <%-
       include("../partials/number-range-results.ejs", {question: question}) %>
-      <% } else {%>
-      <p>Pie chart goes here.</p>
-      <% }}); %>
-      <p><%= JSON.stringify(surveyResults); %></p>
+      <% } else {%> <%- include("../partials/multiple-choice-results.ejs",
+      {question: question}) %> <% }}); %>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       const surveyResults = JSON.parse(`<%- JSON.stringify(surveyResults) %>`);
-      // Create a histogram for each number range question
+      // Use Chart JS for number range and multiple choice questions
       for (question of surveyResults) {
-        if (question.questiontype !== "number-range") continue;
-        // Create a frequency hashmap to use as input for the histogram
-        const totalRange = question.maxrange - question.minrange + 1;
-        const freqKeys = [...Array(totalRange).keys()].map(
-          (i) => i + question.minrange
-        );
-        // Initialize keys to 0 (empty bins in histogram)
-        const frequencies = {};
-        for (key of freqKeys) frequencies[key] = 0;
-        // Populate dataset
-        for (answer of question.answers) frequencies[answer.answertext]++;
+        // Do not use Chart JS if this question is an open ended question
+        if (question.questiontype === "open-ended") continue;
 
-        // Draw the actual histogram
-        const ctx = document
-          .getElementById(question.questionid)
-          .getContext("2d");
-        const myChart = new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: Object.keys(frequencies),
-            datasets: [
-              {
-                data: Object.values(frequencies),
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.2)",
-                  "rgba(54, 162, 235, 0.2)",
-                  "rgba(255, 206, 86, 0.2)",
-                  "rgba(75, 192, 192, 0.2)",
-                  "rgba(153, 102, 255, 0.2)",
-                  "rgba(255, 159, 64, 0.2)",
-                ],
-                borderColor: [
-                  "rgba(255, 99, 132, 1)",
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(255, 206, 86, 1)",
-                  "rgba(75, 192, 192, 1)",
-                  "rgba(153, 102, 255, 1)",
-                  "rgba(255, 159, 64, 1)",
-                ],
-                borderWidth: 1,
-                barPercentage: 1,
-                categoryPercentage: 1,
+        // Chart JS configuration parameters depend on the question type
+        var type, labels, data;
+
+        if (question.questiontype === "number-range") {
+          // Create a frequency hashmap to use as input for the histogram
+          const totalRange = question.maxrange - question.minrange + 1;
+          const freqKeys = [...Array(totalRange).keys()].map(
+            (i) => i + question.minrange
+          );
+          // Initialize keys to 0 (empty bins in histogram)
+          const frequencies = {};
+          for (key of freqKeys) frequencies[key] = 0;
+          // Populate dataset
+          for (answer of question.answers) frequencies[answer.answertext]++;
+          // Set Chart JS configuration parameters to represent a histogram
+          type = "bar";
+          labels = Object.keys(frequencies);
+          data = Object.values(frequencies);
+          // Draw the actual histogram
+          const ctx = document
+            .getElementById(question.questionid)
+            .getContext("2d");
+          const myChart = new Chart(ctx, {
+            type: type,
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  data: data,
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(255, 206, 86, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(255, 159, 64, 0.2)",
+                  ],
+                  borderColor: [
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 159, 64, 1)",
+                  ],
+                  borderWidth: 1,
+                  barPercentage: 1,
+                  categoryPercentage: 1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false,
+                },
               },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: "Value",
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: "Frequency",
+                  },
+                  beginAtZero: true,
+                  ticks: {
+                    stepSize: 1,
+                  },
+                },
               },
             },
-            scales: {
-              x: {
-                title: {
-                  display: true,
-                  text: "Value",
+          });
+        } else {
+          // Create a frequency hashmap to use as input for the pie chart
+          const freqKeys = question.options.split(";");
+          // Initialize keys to 0 (empty bins in histogram)
+          const frequencies = {};
+          for (key of freqKeys) frequencies[key] = 0;
+          // Populate dataset
+          for (answer of question.answers) frequencies[answer.answertext]++;
+          // Set Chart JS configuration parameters to represent a pie chart
+          type = "pie";
+          labels = Object.keys(frequencies);
+          data = Object.values(frequencies);
+          // Draw the actual pie chart
+          const ctx = document
+            .getElementById(question.questionid)
+            .getContext("2d");
+          const myChart = new Chart(ctx, {
+            type: type,
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  data: data,
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(255, 206, 86, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(255, 159, 64, 0.2)",
+                  ],
+                  borderColor: [
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 159, 64, 1)",
+                  ],
+                  borderWidth: 1,
+                  barPercentage: 1,
+                  categoryPercentage: 1,
                 },
-              },
-              y: {
-                title: {
-                  display: true,
-                  text: "Frequency",
-                },
-                beginAtZero: true,
-                ticks: {
-                  stepSize: 1,
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false,
                 },
               },
             },
-          },
-        });
+          });
+        }
       }
     </script>
   </body>
