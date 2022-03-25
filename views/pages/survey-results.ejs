@@ -74,7 +74,7 @@
         } else {
           // Create a frequency hashmap to use as input for the pie chart
           const freqKeys = question.options.split(";");
-          // Initialize keys to 0 (empty bins in histogram)
+          // Initialize keys to 0 (empty slices in pie chart)
           const frequencies = {};
           for (key of freqKeys) frequencies[key] = 0;
           // Populate dataset
@@ -93,7 +93,8 @@
             },
           };
         }
-        // Draw the actual pie chart
+
+        // Draw the actual Chart JS (either histogram or pie chart)
         const ctx = document
           .getElementById(question.questionid)
           .getContext("2d");
