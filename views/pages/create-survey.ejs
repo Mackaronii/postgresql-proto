@@ -8,6 +8,7 @@
     <%- include ("../partials/nav.ejs") %>
 
     <div class="container center">
+      <h1>Create New Survey!</h1>
       <form method="POST">
         <div class="form-group">
           <label for="userId">User ID (Surveyor)</label>
@@ -35,40 +36,39 @@
             placeholder="Enter a name for the new survey"
             required
           />
-        </div>
-        <div style="" class = "form-group">
-          <button onclick="myFunction2()" type="button" class="dropbtn">Create Questions</button>
-          <div class="container hide" id = "myDropdown">
-            <div style="width:50%" class = "form-group"></div>
-              <div style="padding:10px;">
-                <select name="questionType" id="questionType" class="form-control">
-                <option>open-ended</option>
-                <option>number-range</option>
-                <option>multiple-choice</option>
-                </select>
-                <button onclick="UpdateType()" type="button" class="dropbtn">Update Type</button>
-              </div>
-              
-              <div id="questionHandler">
+          </div>
+          <div style="" class = "form-group">
+            <button onclick="myFunction2()" type="button" class="dropbtn">Create Questions</button>
+            <div class="container hide" id = "myDropdown">
+              <div style="width:50%" class = "form-group"></div>
+                <div style="padding:10px;">
+                  <select name="questionType" id="questionType" class="form-control">
+                  <option>open-ended</option>
+                  <option>number-range</option>
+                  <option>multiple-choice</option>
+                  </select>
+                  <button onclick="UpdateType()" type="button" class="dropbtn">Update Type</button>
+                </div>
+                
+                <div id="questionHandler">
 
+                </div>
+                <button onclick="addquestion()" type="button" class="dropbtn">Add Question</button>
               </div>
-              <button onclick="addquestion()" type="button" class="dropbtn">Add Question</button>
+              <table class="table table-striped" id="mytable">
+                <thead>
+                  <tr>
+                    <th scope="col-sm-6">Question Order</th>
+                    <th scope="col-sm-6">Question Type</th>
+                    <th scope="col-6"> Question Prompt</th>
+                    <th scope="col-6"> Question Specific Values</th>
+                    <th scope="col-6"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
             </div>
-            <table class="table table-striped" id="mytable">
-              <thead>
-                <tr>
-                  <th scope="col-sm-6">Question Order</th>
-                  <th scope="col-sm-6">Question Type</th>
-                  <th scope="col-6"> Question Prompt</th>
-                  <th scope="col-6"> Question Specific Values</th>
-                  <th scope="col-6"></th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
-          </div>
-          </div>
           <div style= "" class = "form-group">
           <button type="submit" class="btn btn-primary">Create Survey</button>
           </div>
