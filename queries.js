@@ -231,22 +231,70 @@ const createSurvey = async function (req, res) {
     .catch((e) => console.error(e))
     .finally(() => client.release());
 };
-
-const createQuestions = async function (req, res) {
+/**
+ * 
+ const createQuestions = async function ( req, res, surveyId ) {
   // Extract user input from request body
+  console.log( surveyId + 'ish' );
   const newQuestion = {
-    surveyId: req.body.surveyId,
+    surveyId: surveyId,
     questionOrder: req.body.questionOrder,
     questionType: req.body.questionType,
     questionPrompt: req.body.questionPrompt,
+    minRange: req.body.minRange,
+    maxRange: req.body.maxRange,
+    options: req.body.options
   };
+  console.log( '1' );
   // Construct SQL query
   const sql = format(
-    "INSERT INTO question (surveyID, questionOrder, questionType, questionPrompt) VALUES (%L, %L, %L, %L) RETURNING questionID",
+    "INSERT INTO question (surveyID, questionOrder, questionType, questionPrompt, minRange, maxRange, options) VALUES (%L, %L, %L, %L,%L, %L,%L) RETURNING questionID",
     newQuestion.surveyId,
     newQuestion.questionOrder,
     newQuestion.questionType,
-    newQuestion.questionPrompt
+    newQuestion.questionPrompt,
+    newQuestion.minRange,
+    newQuestion.maxRange,
+    newQuestion.options
+
+  );
+  console.log( '2' );
+  console.log( sql );
+  // Return query as promise
+  const client = await pool.connect();
+  return client
+    .query( sql )
+    .then( ( results ) => {
+      console.table( results.rows );
+      console.log( New question created [ID=${results.rows[0].questionid}] );
+      return results.rows;
+    } )
+    .catch( ( e ) => console.error( e ) )
+    .finally( () => client.release() );
+};
+
+ */
+const createQuestions = async function (req, res, surveyId) {
+  // Extract user input from request body
+  const newQuestion = {
+    surveyId: surveyId,
+    questionOrder: req.body.questionOrder,
+    questionType: req.body.questionType,
+    questionPrompt: req.body.questionPrompt,
+    minRange: req.body.minRange,
+    maxRange: req.body.maxRange,
+    options: req.body.options
+  };
+  // Construct SQL query
+  const sql = format(
+    "INSERT INTO question (surveyID, questionOrder, questionType, questionPrompt, minRange, maxRange, options) VALUES (%L, %L, %L, %L, %L, %L, %L) RETURNING questionID",
+    newQuestion.surveyId,
+    newQuestion.questionOrder,
+    newQuestion.questionType,
+    newQuestion.questionPrompt,
+    newQuestion.minRange,
+    newQuestion.maxRange,
+    newQuestion.options
   );
   console.log(sql);
   // Return query as promise

@@ -51,7 +51,6 @@
                 </div>
                 
                 <div id="questionHandler">
-
                 </div>
                 <button onclick="addquestion()" type="button" class="dropbtn">Add Question</button>
               </div>
@@ -83,13 +82,18 @@
   var e = document.getElementById("questionType");
   
   var qh = document.getElementById("questionHandler");
+  
+  
   function UpdateType() {
+    
     var strUser = e.options[e.selectedIndex].text;
+    
   if(strUser == "open-ended"){
     document.getElementById('questionHandler').innerHTML = '';
     var question = document.createElement("INPUT");
     question.setAttribute("type", "text");
-    question.setAttribute("id", "qq");
+    question.setAttribute("id", "questionPrompt");
+    question.setAttribute("name", "questionPrompt");
     var x = document.createElement("LABEL");
     var t = document.createTextNode("Question Prompt");
     x.appendChild(t);
@@ -100,42 +104,45 @@
     if(document.getElementById('questionHandler').innerHTML !== null){
       document.getElementById('questionHandler').innerHTML = '';
     }
-    
     var question = document.createElement("INPUT");
     question.setAttribute("type", "text");
-    question.setAttribute("id", "qq");
+    question.setAttribute("id", "questionPrompt");
+    question.setAttribute("name", "questionPrompt");
     var x = document.createElement("LABEL");
     var t = document.createTextNode("Question Prompt");
     x.appendChild(t);
     qh.appendChild(x);
     qh.appendChild(question);
-
-    var minval = document.createElement("INPUT");
-    minval.setAttribute("type", "number");
-    minval.setAttribute("id", "min");
+    var minRange = document.createElement("INPUT");
+    minRange.setAttribute("type", "number");
+    minRange.setAttribute("id", "minRange");
+    minRange.setAttribute("name", "minRange");
+    minRange.setAttribute("value", 0);
     var x2= document.createElement("LABEL");
     var t2 = document.createTextNode("Minimum Value");
     x2.appendChild(t2);
     qh.appendChild(x2);
-    qh.appendChild(minval);
+    qh.appendChild(minRange);
 
-    var maxval = document.createElement("INPUT");
-    maxval.setAttribute("type", "number");
-    maxval.setAttribute("id", "max");
+    var maxRange = document.createElement("INPUT");
+    maxRange.setAttribute("type", "number");
+    maxRange.setAttribute("id", "maxRange");
+    maxRange.setAttribute("name", "maxRange");
+    maxRange.setAttribute("value", 0);
     var x3= document.createElement("LABEL");
     var t3 = document.createTextNode("Maximum Value");
     x3.appendChild(t3);
     qh.appendChild(x3);
-    qh.appendChild(maxval);
-    
-    
+    qh.appendChild(maxRange);
   }
+  
   if(strUser == "multiple-choice"){
     document.getElementById('questionHandler').innerHTML = '';
     
     var question = document.createElement("INPUT");
     question.setAttribute("type", "text");
-    question.setAttribute("id", "qq");
+    question.setAttribute("id", "questionPrompt");
+    question.setAttribute("name", "questionPrompt");
     var x = document.createElement("LABEL");
     var t = document.createTextNode("Question Prompt");
     x.appendChild(t);
@@ -182,14 +189,32 @@
     mcq4.setAttribute("id", "mcq4");
 
     qh.appendChild(mcq4);
+
+
     
   }
+  var questionOrder = document.createElement("INPUT");
+  questionOrder.setAttribute("type", "number");
+  questionOrder.setAttribute("id", "questionOrder");
+  questionOrder.setAttribute("name", "questionOrder");
+  questionOrder.setAttribute("class", "hide");
+  questionOrder.setAttribute("value", count);
+  qh.appendChild(questionOrder);
+  var options = document.createElement("INPUT");
+  options.setAttribute("type", "text");
+  options.setAttribute("id", "options");
+  options.setAttribute("name", "options");
+  var optionstr = "" + document.getElementById("mcq1").value+","+document.getElementById("mcq2").value+","+document.getElementById("mcq3").value+","+document.getElementById("mcq4").value;
+  options.setAttribute("class", "hide");
+  options.setAttribute("value", optionstr);
+  qh.appendChild(options);
+  
   }
   
   function addquestion() {
     var e = document.getElementById("questionType");
     var strUser = e.options[e.selectedIndex].text;
-    var newQuestion = document.getElementById("qq").value;
+    var newQuestion = document.getElementById("questionPrompt").value;
     
     count = count + 1;
     var x = document.createElement("INPUT");
@@ -201,8 +226,8 @@
       rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td></td>";
     }
     if(strUser == "number-range"){
-      var min = document.getElementById("min").value;
-      var max = document.getElementById("max").value;
+      var min = document.getElementById("minRange").value;
+      var max = document.getElementById("maxRange").value;
       rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td>Min:" +min+ " Max:"+max+"</td>";
     }
     if(strUser == "multiple-choice"){
