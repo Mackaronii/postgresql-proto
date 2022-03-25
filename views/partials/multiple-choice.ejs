@@ -1,11 +1,16 @@
 <div class="form-group">
   <label for="<%= question.questionid %>"><%- question.questionprompt %></label>
+  <% if (question.options !== null) { %>
   <select
     name="<%= question.questionid %>"
     id="<%= question.questionid %>"
     class="form-control"
   >
-    <option>Option 1</option>
-    <option>Option 2</option>
+    <% question.options.split(';').forEach(function(option) { %>
+    <option><%- option %></option>
+    <% }); %>
   </select>
+  <% } else { %>
+  <p>This question is missing options.</p>
+  <% }; %>
 </div>

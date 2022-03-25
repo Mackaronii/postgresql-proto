@@ -8,6 +8,7 @@
     <%- include ("../partials/nav.ejs") %>
 
     <div class="container center">
+      <h1>Create New Survey!</h1>
       <form method="POST">
         <div class="form-group">
           <label for="userId">User ID (Surveyor)</label>
@@ -35,9 +36,240 @@
             placeholder="Enter a name for the new survey"
             required
           />
+          </div>
+          <div style="" class = "form-group">
+            <button onclick="myFunction2()" type="button" class="dropbtn">Create Questions</button>
+            <div class="container hide" id = "myDropdown">
+              <div style="width:50%" class = "form-group"></div>
+                <div style="padding:10px;">
+                  <select name="questionType" id="questionType" class="form-control">
+                  <option>open-ended</option>
+                  <option>number-range</option>
+                  <option>multiple-choice</option>
+                  </select>
+                  <button onclick="UpdateType()" type="button" class="dropbtn">Update Type</button>
+                </div>
+                
+                <div id="questionHandler">
+                </div>
+                <button onclick="addquestion()" type="button" class="dropbtn">Add Question</button>
+              </div>
+              <table class="table table-striped" id="mytable">
+                <thead>
+                  <tr>
+                    <th scope="col-sm-6">Question Order</th>
+                    <th scope="col-sm-6">Question Type</th>
+                    <th scope="col-6"> Question Prompt</th>
+                    <th scope="col-6"> Question Specific Values</th>
+                    <th scope="col-6"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          <div style= "" class = "form-group">
+          <button type="submit" class="btn btn-primary">Create Survey</button>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary">Create Survey</button>
       </form>
     </div>
   </body>
 </html>
+
+<script>
+  var count = 0;
+  var e = document.getElementById("questionType");
+  
+  var qh = document.getElementById("questionHandler");
+  
+  
+  function UpdateType() {
+    
+    var strUser = e.options[e.selectedIndex].text;
+    
+  if(strUser == "open-ended"){
+    document.getElementById('questionHandler').innerHTML = '';
+    var question = document.createElement("INPUT");
+    question.setAttribute("type", "text");
+    question.setAttribute("id", "questionPrompt");
+    question.setAttribute("name", "questionPrompt");
+    var x = document.createElement("LABEL");
+    var t = document.createTextNode("Question Prompt");
+    x.appendChild(t);
+    qh.appendChild(x);
+    qh.appendChild(question);
+  }
+  if(strUser == "number-range"){
+    if(document.getElementById('questionHandler').innerHTML !== null){
+      document.getElementById('questionHandler').innerHTML = '';
+    }
+    var question = document.createElement("INPUT");
+    question.setAttribute("type", "text");
+    question.setAttribute("id", "questionPrompt");
+    question.setAttribute("name", "questionPrompt");
+    var x = document.createElement("LABEL");
+    var t = document.createTextNode("Question Prompt");
+    x.appendChild(t);
+    qh.appendChild(x);
+    qh.appendChild(question);
+    var minRange = document.createElement("INPUT");
+    minRange.setAttribute("type", "number");
+    minRange.setAttribute("id", "minRange");
+    minRange.setAttribute("name", "minRange");
+    minRange.setAttribute("value", 0);
+    var x2= document.createElement("LABEL");
+    var t2 = document.createTextNode("Minimum Value");
+    x2.appendChild(t2);
+    qh.appendChild(x2);
+    qh.appendChild(minRange);
+
+    var maxRange = document.createElement("INPUT");
+    maxRange.setAttribute("type", "number");
+    maxRange.setAttribute("id", "maxRange");
+    maxRange.setAttribute("name", "maxRange");
+    maxRange.setAttribute("value", 0);
+    var x3= document.createElement("LABEL");
+    var t3 = document.createTextNode("Maximum Value");
+    x3.appendChild(t3);
+    qh.appendChild(x3);
+    qh.appendChild(maxRange);
+  }
+  
+  if(strUser == "multiple-choice"){
+    document.getElementById('questionHandler').innerHTML = '';
+    
+    var question = document.createElement("INPUT");
+    question.setAttribute("type", "text");
+    question.setAttribute("id", "questionPrompt");
+    question.setAttribute("name", "questionPrompt");
+    var x = document.createElement("LABEL");
+    var t = document.createTextNode("Question Prompt");
+    x.appendChild(t);
+    qh.appendChild(x);
+    qh.appendChild(question);
+
+    var numchoices = document.createElement("INPUT");
+    numchoices.setAttribute("type", "number");
+    numchoices.setAttribute("id", "mcqval");
+    numchoices.setAttribute("value", 1);
+    var x1= document.createElement("LABEL");
+    var t1 = document.createTextNode("Number of MCQs");
+    x1.appendChild(t1);
+    qh.appendChild(x1);
+    qh.appendChild(numchoices);
+    var btnnn = document.createElement("BUTTON");
+    btnnn.setAttribute("type", "button");
+    var t = document.createTextNode("Update MCQ");
+    btnnn.appendChild(t);
+    qh.appendChild(btnnn);
+
+    var x2= document.createElement("LABEL");
+    var t2 = document.createTextNode("MCQ questions");
+    var mcq1 = document.createElement("INPUT");
+    mcq1.setAttribute("type", "text");
+    mcq1.setAttribute("id", "mcq1");
+
+    qh.appendChild(mcq1);
+
+    var mcq2 = document.createElement("INPUT");
+    mcq2.setAttribute("type", "text");
+    mcq2.setAttribute("id", "mcq2");
+
+    qh.appendChild(mcq2);
+
+    var mcq3 = document.createElement("INPUT");
+    mcq3.setAttribute("type", "text");
+    mcq3.setAttribute("id", "mcq3");
+
+    qh.appendChild(mcq3);
+
+    var mcq4 = document.createElement("INPUT");
+    mcq4.setAttribute("type", "text");
+    mcq4.setAttribute("id", "mcq4");
+
+    qh.appendChild(mcq4);
+
+
+    
+  }
+  var questionOrder = document.createElement("INPUT");
+  questionOrder.setAttribute("type", "number");
+  questionOrder.setAttribute("id", "questionOrder");
+  questionOrder.setAttribute("name", "questionOrder");
+  questionOrder.setAttribute("class", "hide");
+  questionOrder.setAttribute("value", count);
+  qh.appendChild(questionOrder);
+  var options = document.createElement("INPUT");
+  options.setAttribute("type", "text");
+  options.setAttribute("id", "options");
+  options.setAttribute("name", "options");
+  var optionstr = "" + document.getElementById("mcq1").value+","+document.getElementById("mcq2").value+","+document.getElementById("mcq3").value+","+document.getElementById("mcq4").value;
+  options.setAttribute("class", "hide");
+  options.setAttribute("value", optionstr);
+  qh.appendChild(options);
+  
+  }
+  
+  function addquestion() {
+    var e = document.getElementById("questionType");
+    var strUser = e.options[e.selectedIndex].text;
+    var newQuestion = document.getElementById("questionPrompt").value;
+    
+    count = count + 1;
+    var x = document.createElement("INPUT");
+    x.setAttribute("type", "text");
+    var rows = "";
+        
+    
+    if(strUser == "open-ended"){
+      rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td></td>";
+    }
+    if(strUser == "number-range"){
+      var min = document.getElementById("minRange").value;
+      var max = document.getElementById("maxRange").value;
+      rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td>Min:" +min+ " Max:"+max+"</td>";
+    }
+    if(strUser == "multiple-choice"){
+      var mcqval = document.getElementById("mcqval").value;
+      var mcq1 = document.getElementById("mcq1").value;
+      var mcq2 = document.getElementById("mcq2").value;
+      var mcq3 = document.getElementById("mcq3").value;
+      var mcq4= document.getElementById("mcq4").value;
+      rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td>Num:" +mcqval+ " options:"+mcq1+"," +mcq2+ ","+mcq3+ "," + mcq4+"</td>";
+    }
+  
+        
+        var tbody = document.querySelector("#mytable tbody");
+        var tr = document.createElement("tr");
+
+        tr.innerHTML = rows;
+        tbody.appendChild(tr)
+        var y = document.getElementById("questionType");
+  }
+  
+
+  
+  /* When the user clicks on the button, 
+  toggle between hiding and showing the dropdown content */
+  function myFunction2() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+  
+  function myFunction3() {
+    document.getElementById("myTable").classList.toggle("add");
+  }
+  // Close the dropdown if the user clicks outside of it
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+  </script>

@@ -1,0 +1,6 @@
+<label for="<%= question.questionid %>"><%- question.questionprompt %></label>
+<ul id="<%= question.questionid %>" class="list-group">
+  <% for (const answer of question.answers) { %>
+  <li class="list-group-item"><%= answer.answertext %></li>
+  <% }; %>
+</ul>

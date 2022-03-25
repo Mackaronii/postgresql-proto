@@ -7,6 +7,7 @@ var bodyParser = require("body-parser");
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const path = require("path");
+const { brotliDecompress } = require("zlib");
 const PORT = process.env.PORT || 8000;
 
 const {SHA256} = require("./SHA256_v3");
@@ -89,6 +90,42 @@ app.post("/surveys/:id", urlencodedParser, async (req, res) => {
   }
 });
 
+// PATCH survey to be closed
+app.patch("/surveys/:id", urlencodedParser, async (req, res) => {
+  try {
+    await db.closeSurveyById(req, res);
+    res.status(200).send();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
+// Render survey results for a particular survey
+app.get("/surveys/:id/results", async (req, res) => {
+  try {
+    // Get the survey
+    const survey = await db.getSurveyById(req, res);
+    // Get the questions for the survey
+    
+    const surveyQuestions = await db.getSurveyQuestionsById(req, res);
+    // Get the submitted answers for each question
+    for (const question of surveyQuestions) {
+      req.params.questionid = question.questionid;
+      question["answers"] = await db.getSurveyAnswersByQuestionId(req, res);
+    }
+    // console.log(survey);
+    console.log(surveyQuestions);
+    res.render("pages/survey-results", {
+      survey: survey[0],
+      surveyResults: surveyQuestions,
+    });
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
 // Render "Create new survey" page
 app.get("/create-survey", (req, res) => res.render("pages/create-survey"));
 
@@ -96,7 +133,18 @@ app.get("/create-survey", (req, res) => res.render("pages/create-survey"));
 app.post("/create-survey", urlencodedParser, async (req, res) => {
   try {
     const newSurvey = await db.createSurvey(req, res);
-    res.redirect(301, "/");
+    console.log("test");
+    req.params.surveyId = newSurvey;
+    const surveyId = req.params.surveyId;
+    const surveyId2 = surveyId[0].surveyid
+    
+    console.log(req.body.questionOrder);
+    
+
+    //res.redirect(301, "/");
+    
+    
+    const newQuestions = await db.createQuestions(req, res, surveyId2);
     //res.render("pages/create-questions", { newSurvey: newSurvey });
   } catch (err) {
     console.error(err);
@@ -113,6 +161,7 @@ app.get("/create-questions", (req, res) =>
 app.post("/create-questions", urlencodedParser, async (req, res) => {
   try {
     const newQuestion = await db.createQuestions(req, res);
+   
     res.redirect(301, "/");
     // res.render("pages/create-questions", { surveyId: surveyId });
   } catch (err) {

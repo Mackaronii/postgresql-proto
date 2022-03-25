@@ -1,11 +1,18 @@
 <div class="form-group">
   <label for="<%= question.questionid %>"><%- question.questionprompt %></label>
+  <% if (question.minrange !== null && question.maxrange !== null) { %>
   <input
     name="<%= question.questionid %>"
     type="range"
     class="form-range"
     id="<%= question.questionid %>"
     oninput="this.nextElementSibling.value = this.value"
+    min="<%= question.minrange %>"
+    max="<%= question.maxrange %>"
+    value="<%= Math.ceil((question.maxrange - question.minrange) / 2) %>"
   />
-  <output>50</output>
+  <output><%- Math.ceil((question.maxrange - question.minrange) / 2) %></output>
+  <% } else { %>
+  <p>This question is missing min/max range values.</p>
+  <% }; %>
 </div>
