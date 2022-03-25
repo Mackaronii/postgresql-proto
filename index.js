@@ -9,10 +9,38 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 const path = require("path");
 const PORT = process.env.PORT || 8000;
 
+const {SHA256} = require("./SHA256_v3");
+const users = []; // REPLACE THIS LATER
+const flash = require('express-flash')
+const session = require('express-session')
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
+const passport = require('passport')
+ 
+const initializePassport = require('./config/passport-config')
+initializePassport(
+  passport,
+  username => users.find(user => user.username === username),
+  id => users.find(user => user.id === id)
+)
+
 app
   .use(express.static(path.join(__dirname, "public")))
   .set("views", path.join(__dirname, "views"))
   .set("view engine", "ejs");
+
+app.use(express.urlencoded({ extended: false }))
+app.use(flash())
+app.use(session({
+   secret: process.env.SESSION_SECRET,
+   resave: false,
+   saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 // GET homepage
 app.get("/", (req, res) => res.render("pages/index"));
@@ -92,5 +120,36 @@ app.post("/create-questions", urlencodedParser, async (req, res) => {
     res.send("Error " + err);
   }
 });
+
+// GET Login page
+app.get("/login", (req, res) =>
+  res.render("pages/login")
+);
+
+// GET Register page
+app.get("/register", (req, res) =>
+  res.render("pages/register")
+);
+
+app.post('/register', async (req, res) => {
+  try {
+    // Need to make it so that registration checkks for existing accounts first
+    const hash = await SHA256(req.body.password);
+    users.push({
+	  id: users.length,
+      username: req.body.username,
+      password: hash
+    });
+    res.redirect('/login');
+  } catch {
+    res.redirect('/register');
+  }
+});
+
+app.post('/login', passport.authenticate('local', {
+   successRedirect: '/',
+   failureRedirect: '/login',
+   failureFlash: true
+}))
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));

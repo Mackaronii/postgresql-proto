@@ -157,7 +157,7 @@ function BitString(str) { // basically stores a string as an array of bits
 	return o;
 }
 
-const SHA256 = function( plaintext ) {
+const SHA256 = async function( plaintext ) {
 	// Initialize hash values:
 	// (first 32 bits of the fractional parts of the square roots of the first 8 primes 2..19):
 	var h0 = new BitString(0x6a09e667), h1 = new BitString(0xbb67ae85), h2 = new BitString(0x3c6ef372), h3 = new BitString(0xa54ff53a), h4 = new BitString(0x510e527f), h5 = new BitString(0x9b05688c), h6 = new BitString(0x1f83d9ab), h7 = new BitString(0x5be0cd19);
