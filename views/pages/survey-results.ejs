@@ -25,7 +25,7 @@
       const surveyResults = JSON.parse(`<%- JSON.stringify(surveyResults) %>`);
       // Create a histogram for each number range question
       for (question of surveyResults) {
-        if (question.questiontype !== "number-range") break;
+        if (question.questiontype !== "number-range") continue;
         // Create a frequency hashmap to use as input for the histogram
         const totalRange = question.maxrange - question.minrange + 1;
         const freqKeys = [...Array(totalRange).keys()].map(
