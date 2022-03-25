@@ -25,15 +25,17 @@
       const surveyResults = JSON.parse(`<%- JSON.stringify(surveyResults) %>`);
       // Create a histogram for each number range question
       for (question of surveyResults) {
-        console.log(question);
         if (question.questiontype !== "number-range") break;
         // Create a frequency hashmap to use as input for the histogram
+        const totalRange = question.maxrange - question.minrange + 1;
+        const freqKeys = [...Array(totalRange).keys()].map(
+          (i) => i + question.minrange
+        );
+        // Initialize keys to 0 (empty bins in histogram)
         const frequencies = {};
-        for (answer of question.answers) {
-          if (!(answer.answertext in frequencies))
-            frequencies[answer.answertext] = 1;
-          else frequencies[answer.answertext]++;
-        }
+        for (key of freqKeys) frequencies[key] = 0;
+        // Populate dataset
+        for (answer of question.answers) frequencies[answer.answertext]++;
 
         // Draw the actual histogram
         const ctx = document
@@ -45,7 +47,6 @@
             labels: Object.keys(frequencies),
             datasets: [
               {
-                label: "# of Votes",
                 data: Object.values(frequencies),
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.2)",
@@ -70,9 +71,27 @@
             ],
           },
           options: {
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
             scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: "Value",
+                },
+              },
               y: {
+                title: {
+                  display: true,
+                  text: "Frequency",
+                },
                 beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
+                },
               },
             },
           },
