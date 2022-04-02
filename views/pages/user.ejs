@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include ("../partials/header.ejs") %>
+  </head>
+
+  <body>
+    <%- include ("../partials/nav.ejs") %>
+
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container center">
+		<form method="get" action="/logout">
+			<h1>Welcome, 
+				<%= name %>
+			</h1>
+			
+			<button type="submit">Logout</button>
+		</form>
+      </div>
+    </div>
+  </body>
+</html>

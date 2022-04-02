@@ -196,9 +196,27 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', passport.authenticate('local', {
-   successRedirect: '/',
+   successRedirect: '/user',
    failureRedirect: '/login',
    failureFlash: true
-}))
+}));
+
+app.get('/user', forwardAuthenticated, (req, res) => {
+   res.render('pages/user', { name: req.user.username });
+});
+
+app.get('/logout', (req, res) => {
+   req.logOut();
+   res.redirect('/login');
+});
+
+
+function forwardAuthenticated(req, res, next) {
+   if (req.isAuthenticated()) {
+       return next();
+   }
+ 
+   res.redirect('/login');
+}
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
