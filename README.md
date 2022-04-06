@@ -29,3 +29,12 @@
 ```proto.sql``` contains the schema of the Heroku Postgresql database.
 
 The ```views``` folder contains all the .ejs files which use the data returned by queries to populate their HTML elements.
+
+
+## TODO for Milestone 3
+1. Multiple questions can be made at a time during survey creation (Ish and Colin).
+2. Surveyors can log in to manage surveys they own (Sebastian and John).
+    1. User credentials are stored in the DB instead of memory.
+3. Replace Login link/icon with logged-in user's Username (TBD).
+4. Surveyor can close the survey whenver they want (Johnny).
+5. Input validation for all forms (TBD).
