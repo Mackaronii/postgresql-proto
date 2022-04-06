@@ -10,38 +10,40 @@ const path = require("path");
 const { brotliDecompress } = require("zlib");
 const PORT = process.env.PORT || 8000;
 
-const {SHA256} = require("./SHA256_v3");
+const { SHA256 } = require("./SHA256_v3");
 const users = []; // REPLACE THIS LATER
-const flash = require('express-flash')
-const session = require('express-session')
+const flash = require("express-flash");
+const session = require("express-session");
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
-const passport = require('passport')
- 
-const initializePassport = require('./config/passport-config')
+const passport = require("passport");
+
+const initializePassport = require("./config/passport-config");
 initializePassport(
   passport,
-  username => users.find(user => user.username === username),
-  id => users.find(user => user.id === id)
-)
+  (username) => users.find((user) => user.username === username),
+  (id) => users.find((user) => user.id === id)
+);
 
 app
   .use(express.static(path.join(__dirname, "public")))
   .set("views", path.join(__dirname, "views"))
   .set("view engine", "ejs");
 
-app.use(express.urlencoded({ extended: false }))
-app.use(flash())
-app.use(session({
-   secret: process.env.SESSION_SECRET,
-   resave: false,
-   saveUninitialized: false
-}))
-app.use(passport.initialize())
-app.use(passport.session())
+app.use(express.urlencoded({ extended: false }));
+app.use(flash());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // GET homepage
 app.get("/", (req, res) => res.render("pages/index"));
@@ -50,7 +52,13 @@ app.get("/", (req, res) => res.render("pages/index"));
 app.get("/surveys", async (req, res) => {
   try {
     const surveys = await db.getSurveys();
-    res.render("pages/surveys", { surveys: surveys });
+    const loggedInUser = req.user?.username; // May be undefined (if user is guest)
+    res.render("pages/surveys", {
+      data: {
+        surveys: surveys,
+        loggedInUser: loggedInUser,
+      },
+    });
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
@@ -107,7 +115,7 @@ app.get("/surveys/:id/results", async (req, res) => {
     // Get the survey
     const survey = await db.getSurveyById(req, res);
     // Get the questions for the survey
-    
+
     const surveyQuestions = await db.getSurveyQuestionsById(req, res);
     // Get the submitted answers for each question
     for (const question of surveyQuestions) {
@@ -136,14 +144,12 @@ app.post("/create-survey", urlencodedParser, async (req, res) => {
     console.log("test");
     req.params.surveyId = newSurvey;
     const surveyId = req.params.surveyId;
-    const surveyId2 = surveyId[0].surveyid
-    
+    const surveyId2 = surveyId[0].surveyid;
+
     console.log(req.body.questionOrder);
-    
 
     //res.redirect(301, "/");
-    
-    
+
     const newQuestions = await db.createQuestions(req, res, surveyId2);
     //res.render("pages/create-questions", { newSurvey: newSurvey });
   } catch (err) {
@@ -161,7 +167,7 @@ app.get("/create-questions", (req, res) =>
 app.post("/create-questions", urlencodedParser, async (req, res) => {
   try {
     const newQuestion = await db.createQuestions(req, res);
-   
+
     res.redirect(301, "/");
     // res.render("pages/create-questions", { surveyId: surveyId });
   } catch (err) {
@@ -171,52 +177,50 @@ app.post("/create-questions", urlencodedParser, async (req, res) => {
 });
 
 // GET Login page
-app.get("/login", (req, res) =>
-  res.render("pages/login")
-);
+app.get("/login", (req, res) => res.render("pages/login"));
 
 // GET Register page
-app.get("/register", (req, res) =>
-  res.render("pages/register")
-);
+app.get("/register", (req, res) => res.render("pages/register"));
 
-app.post('/register', async (req, res) => {
+app.post("/register", async (req, res) => {
   try {
     // Need to make it so that registration checkks for existing accounts first
     const hash = await SHA256(req.body.password);
     users.push({
-	  id: users.length,
+      id: users.length,
       username: req.body.username,
-      password: hash
+      password: hash,
     });
-    res.redirect('/login');
+    res.redirect("/login");
   } catch {
-    res.redirect('/register');
+    res.redirect("/register");
   }
 });
 
-app.post('/login', passport.authenticate('local', {
-   successRedirect: '/user',
-   failureRedirect: '/login',
-   failureFlash: true
-}));
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/user",
+    failureRedirect: "/login",
+    failureFlash: true,
+  })
+);
 
-app.get('/user', forwardAuthenticated, (req, res) => {
-   res.render('pages/user', { name: req.user.username });
+app.get("/user", forwardAuthenticated, (req, res) => {
+  res.render("pages/user", { name: req.user.username });
 });
 
-app.get('/logout', (req, res) => {
-   req.logOut();
-   res.redirect('/login');
+app.get("/logout", (req, res) => {
+  req.logOut();
+  res.redirect("/login");
 });
-
 
 function forwardAuthenticated(req, res, next) {
-   if (req.isAuthenticated()) {
-       return next();
-   }
- 
-   res.redirect('/login');
+  if (req.isAuthenticated()) {
+    return next();
+  }
+
+  res.redirect("/login");
 }
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
