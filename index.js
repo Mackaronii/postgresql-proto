@@ -71,10 +71,11 @@ app.get("/surveys/:id", async (req, res) => {
     const survey = await db.getSurveyById(req, res);
     const questions = await db.getQuestions(req, res);
     console.log(questions);
-    surveyname = survey[0].surveyname;
     res.render("pages/answer-survey", {
-      surveyname: surveyname,
-      questions: questions,
+      data: {
+        survey: survey[0],
+        questions: questions,
+      },
     });
   } catch (err) {
     console.error(err);

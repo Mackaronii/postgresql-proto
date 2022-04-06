@@ -8,9 +8,10 @@
     <%- include ("../partials/nav.ejs") %>
 
     <div class="container">
-      <h2><%= surveyname %></h2>
+      <h2><%= data.survey.surveyname %></h2>
+      <% if (data.survey.isopen) { %>
       <form method="POST">
-        <% questions.forEach(function(row) { %>
+        <% data.questions.forEach(function(row) { %>
         <hr />
         <% if (row.questiontype === 'open-ended') { %> <%-
         include("../partials/open-ended.ejs", {question: row}) %> <% } else if
@@ -21,6 +22,9 @@
         <hr />
         <button type="submit" class="btn btn-primary">Submit Answers</button>
       </form>
+      <% } else { %>
+      <p>This survey is closed.</p>
+      <% }; %>
     </div>
   </body>
 </html>
