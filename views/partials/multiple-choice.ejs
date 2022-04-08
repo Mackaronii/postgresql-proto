@@ -6,7 +6,7 @@
     id="<%= question.questionid %>"
     class="form-control"
   >
-    <% question.options.split(',').forEach(function(option) { %>
+    <% question.options.split(';').forEach(function(option) { %>
     <option><%- option %></option>
     <% }); %>
   </select>
