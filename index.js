@@ -161,7 +161,7 @@ app.get("/create-survey", (req, res) => res.render("pages/create-survey"));
 //     const newQuestions = await db.createQuestions(req, res, surveyId2);
 //     //res.render("pages/create-questions", { newSurvey: newSurvey });
 //     const surveys = await db.getSurveys();
-//     const loggedInUser = req.user?.username; // May be undefined (if user is guest)
+//     const loggedInUser = req.session.username; // May be undefined (if user is guest)
 //     res.render("pages/surveys", {
 //       data: {
 //         surveys: surveys,
@@ -209,7 +209,7 @@ app.post("/create-survey", urlencodedParser, async (req, res) => {
     
     //res.render("pages/create-questions", { newSurvey: newSurvey });
     const surveys = await db.getSurveys();
-    const loggedInUser = req.user?.username; // May be undefined (if user is guest)
+    const loggedInUser = req.session.username; // May be undefined (if user is guest)
     res.render("pages/surveys", {
       data: {
         surveys: surveys,
@@ -295,7 +295,7 @@ app.post('/register', async (req, res) => {
 	}
 });
 
-app.post('/auth', async function(req, res) {
+app.post('/login', async function(req, res) {
 	let username = req.body.username;
 	let password = req.body.password;
 	if(username && password) {
