@@ -234,8 +234,7 @@ const createSurvey = async function (req, res) {
     .catch((e) => console.error(e))
     .finally(() => client.release());
 };
-/**
- * 
+
  const createQuestions = async function ( req, res, surveyId ) {
   // Extract user input from request body
   console.log( surveyId + 'ish' );
@@ -269,15 +268,15 @@ const createSurvey = async function (req, res) {
     .query( sql )
     .then( ( results ) => {
       console.table( results.rows );
-      console.log( New question created [ID=${results.rows[0].questionid}] );
+      console.log(`New question created [ID=${results.rows[0].questionid}]`);
       return results.rows;
     } )
     .catch( ( e ) => console.error( e ) )
     .finally( () => client.release() );
 };
 
- */
-const createQuestions = async function (req, res, surveyId) {
+ 
+const createQuestions2 = async function (req, res, surveyId, order, type, qprompt, minrange, maxrange, options) {
   // Extract user input from request body
   const newQuestion = {
     surveyId: surveyId,
@@ -289,16 +288,27 @@ const createQuestions = async function (req, res, surveyId) {
     options: req.body.options
   };
   // Construct SQL query
+  // const sql = format(
+  //   "INSERT INTO question (surveyID, questionOrder, questionType, questionPrompt, minRange, maxRange, options) VALUES (%L, %L, %L, %L, %L, %L, %L) RETURNING questionID",
+  //   newQuestion.surveyId,
+  //   newQuestion.questionOrder,
+  //   newQuestion.questionType,
+  //   newQuestion.questionPrompt,
+  //   newQuestion.minRange,
+  //   newQuestion.maxRange,
+  //   newQuestion.options
+  // );
   const sql = format(
     "INSERT INTO question (surveyID, questionOrder, questionType, questionPrompt, minRange, maxRange, options) VALUES (%L, %L, %L, %L, %L, %L, %L) RETURNING questionID",
-    newQuestion.surveyId,
-    newQuestion.questionOrder,
-    newQuestion.questionType,
-    newQuestion.questionPrompt,
-    newQuestion.minRange,
-    newQuestion.maxRange,
-    newQuestion.options
+    surveyId,
+    order,
+    type,
+    qprompt,
+    minrange,
+    maxrange,
+    options
   );
+
   console.log(sql);
   // Return query as promise
   const client = await pool.connect();
@@ -326,4 +336,5 @@ module.exports = {
   postAnswers,
   createSurvey,
   createQuestions,
+  createQuestions2
 };

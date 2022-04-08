@@ -97,8 +97,15 @@
   posted.setAttribute("type", "text");
   posted.setAttribute("id", "posted");
   posted.setAttribute("name", "posted");
-  //questionOrder.setAttribute("class", "hide");
+  //posted.setAttribute("class", "hide");
   md.appendChild(posted);
+
+  var counter = document.createElement("INPUT");
+  counter.setAttribute("type", "text");
+  counter.setAttribute("id", "counter");
+  counter.setAttribute("name", "counter");
+  //counter.setAttribute("class", "hide");
+  md.appendChild(counter);
   
   
   // function UpdateType() {
@@ -393,6 +400,7 @@
       eval("postValues.q" + count + " = [count, strUser, newQuestion, null, null, null]");
       console.log(postValues);
       document.getElementById("posted").value = JSON.stringify(postValues);
+      document.getElementById("counter").value = count;
     }
     if(strUser == "number-range"){
       var min = document.getElementById("minRange").value;
@@ -402,6 +410,7 @@
       eval("postValues.q" + count + " = [count, strUser, newQuestion, min, max, null]");
       console.log(postValues);
       document.getElementById("posted").value = JSON.stringify(postValues);
+      document.getElementById("counter").value = count;
     }
     if(strUser == "multiple-choice"){
       var options = document.getElementById("options").value;
@@ -410,6 +419,7 @@
       eval("postValues.q" + count + " = [count, strUser, newQuestion, null, null, options]");
       console.log(postValues);
       document.getElementById("posted").value = JSON.stringify(postValues);
+      document.getElementById("counter").value = count;
     }
   
         
