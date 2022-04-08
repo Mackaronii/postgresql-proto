@@ -385,9 +385,40 @@
 //  };
 
   function addquestion() {
+
     var e = document.getElementById("questionType");
     var strUser = e.options[e.selectedIndex].text;
     var newQuestion = document.getElementById("questionPrompt").value;
+    var cont = true;
+
+    if(strUser == "open-ended"){
+      if((document.getElementById("questionPrompt").value.length == 0)){
+        cont = false;    
+        alert("All textboxes must be filled")
+        }
+    }
+
+    if(strUser == "number-range"){
+      if (document.getElementById("minRange").value >= document.getElementById("maxRange").value) {
+        cont = false;
+        alert("The minimum value must be less than the maximum value");
+      }
+      if((document.getElementById("minRange").value.length == 0) || (document.getElementById("maxRange").value.length == 0)|| (document.getElementById("questionPrompt").value.length == 0)){
+        cont = false;    
+        alert("All textboxes must be filled")
+        }
+    }
+
+    if(strUser == "multiple-choice"){
+      
+      if((document.getElementById("options").value.length == 0)|| (document.getElementById("questionPrompt").value.length == 0)){
+        cont = false;    
+        alert("All textboxes must be filled")
+        }
+    }
+
+
+
     
     count = count + 1;
     var x = document.createElement("INPUT");
@@ -395,14 +426,14 @@
     var rows = "";
         
     
-    if(strUser == "open-ended"){
+    if((strUser == "open-ended") && cont){
       rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td></td>";
       eval("postValues.q" + count + " = [count, strUser, newQuestion, null, null, null]");
       console.log(postValues);
       document.getElementById("posted").value = JSON.stringify(postValues);
       document.getElementById("counter").value = count;
     }
-    if(strUser == "number-range"){
+    if((strUser == "number-range") && cont){
       var min = document.getElementById("minRange").value;
       var max = document.getElementById("maxRange").value;
       rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td>Min:" +min+ " Max:"+max+"</td>";
@@ -412,7 +443,7 @@
       document.getElementById("posted").value = JSON.stringify(postValues);
       document.getElementById("counter").value = count;
     }
-    if(strUser == "multiple-choice"){
+    if((strUser == "multiple-choice") && cont){
       var options = document.getElementById("options").value;
       rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td>Options:" + options + "</td>";
 

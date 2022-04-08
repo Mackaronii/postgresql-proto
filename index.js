@@ -200,8 +200,8 @@ app.post("/create-survey", urlencodedParser, async (req, res) => {
     console.log(a);
 
     for (let i = 0; i < req.body.counter; i++) {
-      console.log(a[i][0]);
-      console.log("id1");
+      //console.log(a[i][0]);
+      //console.log("id1");
       const newQuestions = await db.createQuestions2(req, res, surveyId2, a[i][0], a[i][1], a[i][2], a[i][3], a[i][4], a[i][5]);
     }
 
