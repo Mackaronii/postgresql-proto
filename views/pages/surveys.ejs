@@ -20,7 +20,7 @@
           </tr>
         </thead>
         <tbody>
-          <% surveys.forEach(function(row) { %>
+          <% data.surveys.forEach(function(row) { %>
           <tr>
             <th scope="row"><%= row.surveyid %></th>
             <td><%= row.surveyname %></td>
@@ -34,12 +34,15 @@
             </td>
             <td>
               <% if (row.isopen) { %>
+              <!-- Anyone can start a survey if it's open -->
               <a
                 href="/surveys/<%= row.surveyid %>"
                 class="btn btn-success"
                 role="button"
                 >Start</a
               >
+              <% } if (row.isopen && data.loggedInUser === row.username) { %>
+              <!-- Only the surveyor can close their surveys -->
               <a
                 id="<%= row.surveyid %>"
                 onclick="closeSurvey(this.id)"
@@ -47,7 +50,8 @@
                 role="button"
                 >Close Survey</a
               >
-              <% } else { %>
+              <% } if (!row.isopen && data.loggedInUser === row.username) { %>
+              <!-- Only the surveyor can view their survey results -->
               <a
                 href="/surveys/<%= row.surveyid %>/results"
                 class="btn btn-primary"
