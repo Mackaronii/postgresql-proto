@@ -13,7 +13,7 @@
 ## How to Run Locally
 1. Clone this repository.
 2. Run ```npm install``` to pull the dependencies.
-3. Create a ```.env``` file to contain the Heroku app's ```DATABASE_URL``` configuration variable under the Settings tab. E.g., ```DATABASE_URL="my_connection_string"```.
+3. Create a ```.env``` file to contain the Heroku app's ```DATABASE_URL``` configuration variable under the Settings tab. E.g., ```DATABASE_URL="my_connection_string"```. In addition to this, also add a ```"SESSION_SECRET="string"``` to the ```.env``` file where "string" is any piece of text.
 4. Ensure Postgres is installed on your machine and added to your system environment variables.
 5. Log into Heroku using the Heroku CLI ```heroku login```.
 6. Run ```npm run watch```.
