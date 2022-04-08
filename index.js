@@ -141,8 +141,11 @@ app.get("/create-survey", (req, res) => res.render("pages/create-survey"));
 // POST request to post a survey
 app.post("/create-survey", urlencodedParser, async (req, res) => {
   try {
+
     const newSurvey = await db.createSurvey(req, res);
-    console.log("test");
+    console.log("testing1");
+    console.log(req.body);
+    console.log("testing1");
     req.params.surveyId = newSurvey;
     const surveyId = req.params.surveyId;
     const surveyId2 = surveyId[0].surveyid;
@@ -153,6 +156,14 @@ app.post("/create-survey", urlencodedParser, async (req, res) => {
 
     const newQuestions = await db.createQuestions(req, res, surveyId2);
     //res.render("pages/create-questions", { newSurvey: newSurvey });
+    const surveys = await db.getSurveys();
+    const loggedInUser = req.user?.username; // May be undefined (if user is guest)
+    res.render("pages/surveys", {
+      data: {
+        surveys: surveys,
+        loggedInUser: loggedInUser,
+      },
+    });
   } catch (err) {
     console.error(err);
     res.send("Error " + err);

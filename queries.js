@@ -226,6 +226,9 @@ const createSurvey = async function (req, res) {
     .then((results) => {
       console.table(results.rows);
       console.log(`New survey created [ID=${results.rows[0].surveyid}]`);
+      console.log('results1');
+      console.log(results.rows);
+      console.log('results2');
       return results.rows;
     })
     .catch((e) => console.error(e))
@@ -303,7 +306,9 @@ const createQuestions = async function (req, res, surveyId) {
     .query(sql)
     .then((results) => {
       console.table(results.rows);
+      console.log('test1')
       console.log(`New question created [ID=${results.rows[0].questionid}]`);
+      console.log('test2')
       return results.rows;
     })
     .catch((e) => console.error(e))
