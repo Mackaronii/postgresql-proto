@@ -12,14 +12,14 @@ const PORT = process.env.PORT || 8000;
 
 const {SHA256} = require("./SHA256_v3");
 const users = []; // REPLACE THIS LATER
-const flash = require('express-flash')
-const session = require('express-session')
+const flash = require('express-flash');
+const session = require('express-session');
 
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
+  require('dotenv').config();
 }
 
-const passport = require('passport')
+const passport = require('passport');
  
 const initializePassport = require('./config/passport-config')
 initializePassport(
@@ -33,15 +33,16 @@ app
   .set("views", path.join(__dirname, "views"))
   .set("view engine", "ejs");
 
-app.use(express.urlencoded({ extended: false }))
-app.use(flash())
+app.use(express.urlencoded({ extended: true }));
+app.use(flash());
 app.use(session({
    secret: process.env.SESSION_SECRET,
-   resave: false,
-   saveUninitialized: false
-}))
-app.use(passport.initialize())
-app.use(passport.session())
+   resave: true,
+   saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.json());
 
 // GET homepage
 app.get("/", (req, res) => res.render("pages/index"));
@@ -180,6 +181,7 @@ app.get("/register", (req, res) =>
   res.render("pages/register")
 );
 
+/*
 app.post('/register', async (req, res) => {
   try {
     // Need to make it so that registration checkks for existing accounts first
@@ -200,9 +202,57 @@ app.post('/login', passport.authenticate('local', {
    failureRedirect: '/login',
    failureFlash: true
 }));
+*/
+
+app.post('/register', async (req, res) => {
+	try {
+		let username = req.body.username;
+		let password = req.body.password;
+		if(username && password) {
+			let queryResult = await db.checkUserExists(req, res);
+			
+			if(queryResult.length === 0) {
+				let queryResult = await db.register(req, res, SHA256);
+				
+				res.redirect('/login');
+			} else {
+				res.send("That username is already taken!");
+				res.end();
+			}
+		} else {
+			res.send("Please enter Username and Password!");
+			res.end();
+		}
+	} catch(e) {
+		console.error(e);
+		res.redirect('/register');
+	}
+});
+
+app.post('/auth', async function(req, res) {
+	let username = req.body.username;
+	let password = req.body.password;
+	if(username && password) {
+		let queryResult = await db.checkLogin(req, res, SHA256);
+		
+		console.log(queryResult);
+		console.log(queryResult.length);
+		
+		if(queryResult.length > 0) {
+			req.session.loggedin = true;
+			req.session.username = username;
+			res.redirect('/user');
+		} else {
+			res.send("Incorrect Username and/or Password!");
+		}
+	} else {
+		res.send("Please enter Username and Password!");
+	}
+	res.end();
+});
 
 app.get('/user', forwardAuthenticated, (req, res) => {
-   res.render('pages/user', { name: req.user.username });
+   res.render('pages/user', { name: req.session.username });
 });
 
 app.get('/logout', (req, res) => {
@@ -212,7 +262,7 @@ app.get('/logout', (req, res) => {
 
 
 function forwardAuthenticated(req, res, next) {
-   if (req.isAuthenticated()) {
+   if (req.isAuthenticated() || req.session.loggedin) {
        return next();
    }
  
