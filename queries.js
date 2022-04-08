@@ -325,6 +325,47 @@ const createQuestions2 = async function (req, res, surveyId, order, type, qpromp
     .finally(() => client.release());
 };
 
+const checkLogin = async function(req, res, hashFunction) {
+	let username = req.body.username;
+	let password = req.body.password;
+	const sql = format("SELECT * FROM users WHERE username = %L AND password = %L", username, await hashFunction(password));
+	const client = await pool.connect();
+	return client
+		.query(sql)
+		.then((results) => {
+			return results.rows;
+		})
+		.catch((e) => console.error(e))
+		.finally(() => client.release());
+}
+
+const checkUserExists = async function(req, res) {
+	let username = req.body.username;
+	const sql = format("SELECT * FROM users WHERE username = %L", username);
+	const client = await pool.connect();
+	return client
+		.query(sql)
+		.then((results) => {
+			return results.rows;
+		})
+		.catch((e) => console.error(e))
+		.finally(() => client.release());
+}
+
+const register = async function(req, res, hashFunction) {
+	let username = req.body.username;
+	let password = req.body.password;
+	const sql = format("INSERT INTO users(username, password) VALUES (%L, %L)", username, await hashFunction(password));
+	const client = await pool.connect();
+	return client
+		.query(sql)
+		.then((results) => {
+			return results.rows;
+		})
+		.catch((e) => console.error(e))
+		.finally(() => client.release());
+}
+
 module.exports = {
   getSurveys,
   getSurveyById,
@@ -336,5 +377,8 @@ module.exports = {
   postAnswers,
   createSurvey,
   createQuestions,
+  checkLogin,
+  checkUserExists,
+  register,
   createQuestions2
 };

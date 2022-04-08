@@ -1,5 +1,5 @@
 --Insert a user
-INSERT INTO users (username) VALUES ('Johnny');
+INSERT INTO users (username, password) VALUES ('Johnny', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8');
 
 --Insert a survey
 INSERT INTO survey (userID, surveyName, isOpen) VALUES (1, 'Test Survey', true);

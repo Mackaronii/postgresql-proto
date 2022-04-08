@@ -18,7 +18,8 @@ CREATE TABLE question
 
 CREATE TABLE users
 (userID SERIAL PRIMARY KEY,
- username TEXT NOT NULL);
+ username TEXT NOT NULL,
+ password TEXT NOT NULL);
 
 
 CREATE TABLE answer
