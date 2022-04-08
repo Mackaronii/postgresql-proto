@@ -53,7 +53,7 @@ app.get("/", (req, res) => res.render("pages/index"));
 app.get("/surveys", async (req, res) => {
   try {
     const surveys = await db.getSurveys();
-    const loggedInUser = req.user?.username; // May be undefined (if user is guest)
+    const loggedInUser = req.user.username; // May be undefined (if user is guest)
     res.render("pages/surveys", {
       data: {
         surveys: surveys,
