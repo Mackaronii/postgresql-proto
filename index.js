@@ -140,25 +140,88 @@ app.get("/surveys/:id/results", async (req, res) => {
 app.get("/create-survey", (req, res) => res.render("pages/create-survey"));
 
 // POST request to post a survey
+// app.post("/create-survey", urlencodedParser, async (req, res) => {
+//   try {
+
+//     const newSurvey = await db.createSurvey(req, res);
+//     console.log("testing1");
+//     console.log(req.body);
+//     console.log("testing1");
+//     req.params.surveyId = newSurvey;
+//     const surveyId = req.params.surveyId;
+//     const surveyId2 = surveyId[0].surveyid;
+//     console.log("id");
+//     console.log(surveyId2);
+//     console.log("id");
+
+//     console.log(req.body.questionOrder);
+
+//     //res.redirect(301, "/");
+
+//     const newQuestions = await db.createQuestions(req, res, surveyId2);
+//     //res.render("pages/create-questions", { newSurvey: newSurvey });
+//     const surveys = await db.getSurveys();
+//     const loggedInUser = req.user?.username; // May be undefined (if user is guest)
+//     res.render("pages/surveys", {
+//       data: {
+//         surveys: surveys,
+//         loggedInUser: loggedInUser,
+//       },
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.send("Error " + err);
+//   }
+// });
+
 app.post("/create-survey", urlencodedParser, async (req, res) => {
   try {
+
     const newSurvey = await db.createSurvey(req, res);
-    console.log("test");
+    console.log("testing1");
+    console.log(req.body);
+    console.log("testing1");
     req.params.surveyId = newSurvey;
     const surveyId = req.params.surveyId;
     const surveyId2 = surveyId[0].surveyid;
+    console.log("id");
+    console.log(surveyId2);
+    console.log("id");
 
     console.log(req.body.questionOrder);
 
     //res.redirect(301, "/");
 
-    const newQuestions = await db.createQuestions(req, res, surveyId2);
+    console.log("id1");
+    console.log(req.body.posted);
+    console.log(req.body.counter);
+    console.log("id1");
+    const postedValues = JSON.parse(req.body.posted);
+    const a = Object.values(postedValues);
+    console.log(a);
+
+    for (let i = 0; i < req.body.counter; i++) {
+      //console.log(a[i][0]);
+      //console.log("id1");
+      const newQuestions = await db.createQuestions2(req, res, surveyId2, a[i][0], a[i][1], a[i][2], a[i][3], a[i][4], a[i][5]);
+    }
+
+    
     //res.render("pages/create-questions", { newSurvey: newSurvey });
+    const surveys = await db.getSurveys();
+    const loggedInUser = req.user?.username; // May be undefined (if user is guest)
+    res.render("pages/surveys", {
+      data: {
+        surveys: surveys,
+        loggedInUser: loggedInUser,
+      },
+    });
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
   }
 });
+
 
 // Render "Create new question" page
 app.get("/create-questions", (req, res) =>

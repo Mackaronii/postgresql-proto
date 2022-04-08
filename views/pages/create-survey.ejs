@@ -78,12 +78,165 @@
 </html>
 
 <script>
+  //   const postValues = {
+//    q1: [Question order, Question type, prompt, minrange, maxrange, options],
+//    q2: [Question order, Question type, prompt, minrange, maxrange, options],
+//    q3: [Question order, Question type, prompt, minrange, maxrange, options]
+//  };
+
+
   var count = 0;
   var e = document.getElementById("questionType");
   
   var qh = document.getElementById("questionHandler");
+  var md = document.getElementById("myDropdown");
+
+  const postValues ={};
+
+  var posted = document.createElement("INPUT");
+  posted.setAttribute("type", "text");
+  posted.setAttribute("id", "posted");
+  posted.setAttribute("name", "posted");
+  posted.setAttribute("class", "hide");
+  md.appendChild(posted);
+
+  var counter = document.createElement("INPUT");
+  counter.setAttribute("type", "text");
+  counter.setAttribute("id", "counter");
+  counter.setAttribute("name", "counter");
+  counter.setAttribute("class", "hide");
+  md.appendChild(counter);
   
   
+  // function UpdateType() {
+    
+  //   var strUser = e.options[e.selectedIndex].text;
+    
+  // if(strUser == "open-ended"){
+  //   document.getElementById('questionHandler').innerHTML = '';
+  //   var question = document.createElement("INPUT");
+  //   question.setAttribute("type", "text");
+  //   question.setAttribute("id", "questionPrompt");
+  //   question.setAttribute("name", "questionPrompt");
+  //   var x = document.createElement("LABEL");
+  //   var t = document.createTextNode("Question Prompt");
+  //   x.appendChild(t);
+  //   qh.appendChild(x);
+  //   qh.appendChild(question);
+  // }
+  // if(strUser == "number-range"){
+  //   if(document.getElementById('questionHandler').innerHTML !== null){
+  //     document.getElementById('questionHandler').innerHTML = '';
+  //   }
+  //   var question = document.createElement("INPUT");
+  //   question.setAttribute("type", "text");
+  //   question.setAttribute("id", "questionPrompt");
+  //   question.setAttribute("name", "questionPrompt");
+  //   var x = document.createElement("LABEL");
+  //   var t = document.createTextNode("Question Prompt");
+  //   x.appendChild(t);
+  //   qh.appendChild(x);
+  //   qh.appendChild(question);
+  //   var minRange = document.createElement("INPUT");
+  //   minRange.setAttribute("type", "number");
+  //   minRange.setAttribute("id", "minRange");
+  //   minRange.setAttribute("name", "minRange");
+  //   minRange.setAttribute("value", 0);
+  //   var x2= document.createElement("LABEL");
+  //   var t2 = document.createTextNode("Minimum Value");
+  //   x2.appendChild(t2);
+  //   qh.appendChild(x2);
+  //   qh.appendChild(minRange);
+
+  //   var maxRange = document.createElement("INPUT");
+  //   maxRange.setAttribute("type", "number");
+  //   maxRange.setAttribute("id", "maxRange");
+  //   maxRange.setAttribute("name", "maxRange");
+  //   maxRange.setAttribute("value", 0);
+  //   var x3= document.createElement("LABEL");
+  //   var t3 = document.createTextNode("Maximum Value");
+  //   x3.appendChild(t3);
+  //   qh.appendChild(x3);
+  //   qh.appendChild(maxRange);
+  // }
+  
+  // if(strUser == "multiple-choice"){
+  //   document.getElementById('questionHandler').innerHTML = '';
+    
+  //   var question = document.createElement("INPUT");
+  //   question.setAttribute("type", "text");
+  //   question.setAttribute("id", "questionPrompt");
+  //   question.setAttribute("name", "questionPrompt");
+  //   var x = document.createElement("LABEL");
+  //   var t = document.createTextNode("Question Prompt");
+  //   x.appendChild(t);
+  //   qh.appendChild(x);
+  //   qh.appendChild(question);
+
+  //   var numchoices = document.createElement("INPUT");
+  //   numchoices.setAttribute("type", "number");
+  //   numchoices.setAttribute("id", "mcqval");
+  //   numchoices.setAttribute("value", 1);
+  //   var x1= document.createElement("LABEL");
+  //   var t1 = document.createTextNode("Number of MCQs");
+  //   x1.appendChild(t1);
+  //   qh.appendChild(x1);
+  //   qh.appendChild(numchoices);
+  //   var btnnn = document.createElement("BUTTON");
+  //   btnnn.setAttribute("type", "button");
+  //   var t = document.createTextNode("Update MCQ");
+  //   btnnn.appendChild(t);
+  //   qh.appendChild(btnnn);
+
+  //   var x2= document.createElement("LABEL");
+  //   var t2 = document.createTextNode("MCQ questions");
+  //   var mcq1 = document.createElement("INPUT");
+  //   mcq1.setAttribute("type", "text");
+  //   mcq1.setAttribute("id", "mcq1");
+
+  //   qh.appendChild(mcq1);
+
+  //   var mcq2 = document.createElement("INPUT");
+  //   mcq2.setAttribute("type", "text");
+  //   mcq2.setAttribute("id", "mcq2");
+
+  //   qh.appendChild(mcq2);
+
+  //   var mcq3 = document.createElement("INPUT");
+  //   mcq3.setAttribute("type", "text");
+  //   mcq3.setAttribute("id", "mcq3");
+
+  //   qh.appendChild(mcq3);
+
+  //   var mcq4 = document.createElement("INPUT");
+  //   mcq4.setAttribute("type", "text");
+  //   mcq4.setAttribute("id", "mcq4");
+
+  //   qh.appendChild(mcq4);
+
+
+    
+  // }
+  // var questionOrder = document.createElement("INPUT");
+  // questionOrder.setAttribute("type", "number");
+  // questionOrder.setAttribute("id", "questionOrder");
+  // questionOrder.setAttribute("name", "questionOrder");
+  // questionOrder.setAttribute("class", "hide");
+  // questionOrder.setAttribute("value", count);
+  // qh.appendChild(questionOrder);
+  // var options = document.createElement("INPUT");
+  // options.setAttribute("type", "text");
+  // options.setAttribute("id", "options");
+  // options.setAttribute("name", "options");
+  // var optionstr = "" + document.getElementById("mcq1").value+","+document.getElementById("mcq2").value+","+document.getElementById("mcq3").value+","+document.getElementById("mcq4").value;
+  // options.setAttribute("class", "hide");
+  // options.setAttribute("value", optionstr);
+  // qh.appendChild(options);
+  
+  // }
+  
+
+
   function UpdateType() {
     
     var strUser = e.options[e.selectedIndex].text;
@@ -149,46 +302,46 @@
     qh.appendChild(x);
     qh.appendChild(question);
 
-    var numchoices = document.createElement("INPUT");
-    numchoices.setAttribute("type", "number");
-    numchoices.setAttribute("id", "mcqval");
-    numchoices.setAttribute("value", 1);
+    var options = document.createElement("INPUT");
+    options.setAttribute("type", "text");
+    options.setAttribute("id", "options");
+    options.setAttribute("value", 1);
     var x1= document.createElement("LABEL");
-    var t1 = document.createTextNode("Number of MCQs");
+    var t1 = document.createTextNode("Write your options(Split them using comma's)");
     x1.appendChild(t1);
     qh.appendChild(x1);
-    qh.appendChild(numchoices);
-    var btnnn = document.createElement("BUTTON");
-    btnnn.setAttribute("type", "button");
-    var t = document.createTextNode("Update MCQ");
-    btnnn.appendChild(t);
-    qh.appendChild(btnnn);
+    qh.appendChild(options);
+    // var btnnn = document.createElement("BUTTON");
+    // btnnn.setAttribute("type", "button");
+    // var t = document.createTextNode("Update MCQ");
+    // btnnn.appendChild(t);
+    // qh.appendChild(btnnn);
 
-    var x2= document.createElement("LABEL");
-    var t2 = document.createTextNode("MCQ questions");
-    var mcq1 = document.createElement("INPUT");
-    mcq1.setAttribute("type", "text");
-    mcq1.setAttribute("id", "mcq1");
+    // var x2= document.createElement("LABEL");
+    // var t2 = document.createTextNode("MCQ questions");
+    // var mcq1 = document.createElement("INPUT");
+    // mcq1.setAttribute("type", "text");
+    // mcq1.setAttribute("id", "mcq1");
 
-    qh.appendChild(mcq1);
+    // qh.appendChild(mcq1);
 
-    var mcq2 = document.createElement("INPUT");
-    mcq2.setAttribute("type", "text");
-    mcq2.setAttribute("id", "mcq2");
+    // var mcq2 = document.createElement("INPUT");
+    // mcq2.setAttribute("type", "text");
+    // mcq2.setAttribute("id", "mcq2");
 
-    qh.appendChild(mcq2);
+    // qh.appendChild(mcq2);
 
-    var mcq3 = document.createElement("INPUT");
-    mcq3.setAttribute("type", "text");
-    mcq3.setAttribute("id", "mcq3");
+    // var mcq3 = document.createElement("INPUT");
+    // mcq3.setAttribute("type", "text");
+    // mcq3.setAttribute("id", "mcq3");
 
-    qh.appendChild(mcq3);
+    // qh.appendChild(mcq3);
 
-    var mcq4 = document.createElement("INPUT");
-    mcq4.setAttribute("type", "text");
-    mcq4.setAttribute("id", "mcq4");
+    // var mcq4 = document.createElement("INPUT");
+    // mcq4.setAttribute("type", "text");
+    // mcq4.setAttribute("id", "mcq4");
 
-    qh.appendChild(mcq4);
+    // qh.appendChild(mcq4);
 
 
     
@@ -204,39 +357,102 @@
   options.setAttribute("type", "text");
   options.setAttribute("id", "options");
   options.setAttribute("name", "options");
-  var optionstr = "" + document.getElementById("mcq1").value+","+document.getElementById("mcq2").value+","+document.getElementById("mcq3").value+","+document.getElementById("mcq4").value;
+  var optionstr = "" + document.getElementById("options").value
   options.setAttribute("class", "hide");
   options.setAttribute("value", optionstr);
   qh.appendChild(options);
   
   }
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   const postValues = {
+//    q1: [Question order, Question type, prompt, minrange, maxrange, options],
+//    q2: [Question order, Question type, prompt, minrange, maxrange, options],
+//    q3: [Question order, Question type, prompt, minrange, maxrange, options]
+//  };
+
   function addquestion() {
+
     var e = document.getElementById("questionType");
     var strUser = e.options[e.selectedIndex].text;
     var newQuestion = document.getElementById("questionPrompt").value;
+    var cont = true;
+
+    if(strUser == "open-ended"){
+      if((document.getElementById("questionPrompt").value.length == 0)){
+        cont = false;    
+        alert("All textboxes must be filled")
+        }
+    }
+
+    if(strUser == "number-range"){
+      if (document.getElementById("minRange").value >= document.getElementById("maxRange").value) {
+        cont = false;
+        alert("The minimum value must be less than the maximum value");
+      }
+      if((document.getElementById("minRange").value.length == 0) || (document.getElementById("maxRange").value.length == 0)|| (document.getElementById("questionPrompt").value.length == 0)){
+        cont = false;    
+        alert("All textboxes must be filled")
+        }
+    }
+
+    if(strUser == "multiple-choice"){
+      
+      if((document.getElementById("options").value.length == 0)|| (document.getElementById("questionPrompt").value.length == 0)){
+        cont = false;    
+        alert("All textboxes must be filled")
+        }
+    }
+
+
+
+    if (cont) {
+      count = count + 1;
+    }
     
-    count = count + 1;
     var x = document.createElement("INPUT");
     x.setAttribute("type", "text");
     var rows = "";
         
     
-    if(strUser == "open-ended"){
+    if((strUser == "open-ended") && cont){
       rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td></td>";
+      eval("postValues.q" + count + " = [count, strUser, newQuestion, null, null, null]");
+      console.log(postValues);
+      document.getElementById("posted").value = JSON.stringify(postValues);
+      document.getElementById("counter").value = count;
     }
-    if(strUser == "number-range"){
+    if((strUser == "number-range") && cont){
       var min = document.getElementById("minRange").value;
       var max = document.getElementById("maxRange").value;
       rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td>Min:" +min+ " Max:"+max+"</td>";
+
+      eval("postValues.q" + count + " = [count, strUser, newQuestion, min, max, null]");
+      console.log(postValues);
+      document.getElementById("posted").value = JSON.stringify(postValues);
+      document.getElementById("counter").value = count;
     }
-    if(strUser == "multiple-choice"){
-      var mcqval = document.getElementById("mcqval").value;
-      var mcq1 = document.getElementById("mcq1").value;
-      var mcq2 = document.getElementById("mcq2").value;
-      var mcq3 = document.getElementById("mcq3").value;
-      var mcq4= document.getElementById("mcq4").value;
-      rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td>Num:" +mcqval+ " options:"+mcq1+"," +mcq2+ ","+mcq3+ "," + mcq4+"</td>";
+    if((strUser == "multiple-choice") && cont){
+      var options = document.getElementById("options").value;
+      rows += "<td>" + count + "</td><td>" + strUser +"</td><td>" +  newQuestion+ "</td><td>Options:" + options + "</td>";
+
+      eval("postValues.q" + count + " = [count, strUser, newQuestion, null, null, options]");
+      console.log(postValues);
+      document.getElementById("posted").value = JSON.stringify(postValues);
+      document.getElementById("counter").value = count;
     }
   
         
