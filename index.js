@@ -296,25 +296,29 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async function(req, res) {
-	let username = req.body.username;
-	let password = req.body.password;
-	if(username && password) {
-		let queryResult = await db.checkLogin(req, res, SHA256);
-		
-		console.log(queryResult);
-		console.log(queryResult.length);
-		
-		if(queryResult.length > 0) {
-			req.session.loggedin = true;
-			req.session.username = username;
-			res.redirect('/user');
-		} else {
-			res.send("Incorrect Username and/or Password!");
-		}
+	if(req.session.loggedin === true) {
+		res.redirect("/user");
 	} else {
-		res.send("Please enter Username and Password!");
+		let username = req.body.username;
+		let password = req.body.password;
+		if(username && password) {
+			let queryResult = await db.checkLogin(req, res, SHA256);
+			
+			console.log(queryResult);
+			console.log(queryResult.length);
+			
+			if(queryResult.length > 0) {
+				req.session.loggedin = true;
+				req.session.username = username;
+				res.redirect('/user');
+			} else {
+				res.send("Incorrect Username and/or Password!");
+			}
+		} else {
+			res.send("Please enter Username and Password!");
+		}
+		res.end();
 	}
-	res.end();
 });
 
 app.get('/user', forwardAuthenticated, (req, res) => {
@@ -323,6 +327,8 @@ app.get('/user', forwardAuthenticated, (req, res) => {
 
 app.get("/logout", (req, res) => {
   req.logOut();
+  req.session.loggedin = false;
+  delete req.session.username;
   res.redirect("/login");
 });
 
