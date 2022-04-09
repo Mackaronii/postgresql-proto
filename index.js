@@ -308,6 +308,9 @@ app.post('/login', async function(req, res) {
 			console.log(queryResult.length);
 			
 			if(queryResult.length > 0) {
+				console.error(`More than one account exists with username ${username}`);
+				
+			} else if(queryResult.length === 0) {
 				req.session.loggedin = true;
 				req.session.username = username;
 				res.redirect('/user');
