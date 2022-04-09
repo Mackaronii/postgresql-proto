@@ -325,10 +325,20 @@ const createQuestions2 = async function (req, res, surveyId, order, type, qpromp
     .finally(() => client.release());
 };
 
-const checkLogin = async function(req, res, hashFunction) {
+const checkLogin = async function(req, res, hashFunction, salt) {
+	console.log("checkLogin");
 	let username = req.body.username;
 	let password = req.body.password;
-	const sql = format("SELECT * FROM users WHERE username = %L AND password = %L", username, await hashFunction(password));
+	
+	let userData = await checkUserExists(req, res, hashFunction);
+	
+	if(userData.length > 0 && userData[0].salt) {
+		let salt = userData[0].salt;
+	} else {
+		let salt = "";
+	}
+	
+	const sql = format("SELECT * FROM users WHERE username = %L AND password = %L", username, await hashFunction(password + salt));
 	const client = await pool.connect();
 	return client
 		.query(sql)
@@ -340,6 +350,7 @@ const checkLogin = async function(req, res, hashFunction) {
 }
 
 const checkUserExists = async function(req, res) {
+	console.log("checkUserExists");
 	let username = req.body.username;
 	const sql = format("SELECT * FROM users WHERE username = %L", username);
 	const client = await pool.connect();
@@ -353,9 +364,11 @@ const checkUserExists = async function(req, res) {
 }
 
 const register = async function(req, res, hashFunction) {
+	console.log("register");
 	let username = req.body.username;
 	let password = req.body.password;
-	const sql = format("INSERT INTO users(username, password) VALUES (%L, %L)", username, await hashFunction(password));
+	let salt = generateRandomString(8);
+	const sql = format("INSERT INTO users(username, password, salt) VALUES (%L, %L, %L)", username, await hashFunction(password + salt), salt);
 	const client = await pool.connect();
 	return client
 		.query(sql)
@@ -365,6 +378,15 @@ const register = async function(req, res, hashFunction) {
 		.catch((e) => console.error(e))
 		.finally(() => client.release());
 }
+
+function generateRandomString(numberOfCharacters) {
+   let output = '';
+   let possibleCharacters = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890';  
+for (let i = 0; i < numberOfCharacters; i++) {
+      output = output+possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
+   }
+   return output;
+} 
 
 module.exports = {
   getSurveys,
